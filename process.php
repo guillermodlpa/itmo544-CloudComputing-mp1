@@ -5,6 +5,7 @@
 require 'vendor/autoload.php';
 header("Content-type: text/plain; charset=utf-8");
 
+use Aws\Common\Aws;
 use Aws\SimpleDb\SimpleDbClient;
 use Aws\S3\S3Client;
 use Aws\Sns\SnsClient;
@@ -13,7 +14,8 @@ use Aws\Sns\Exception\InvalidParameterException;
 
 
 //aws factory
-$aws = Aws::factory('/var/www/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
+
+$aws = Aws::factory('/var/www/itmo544-CloudComputing-mp1/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
 
 $client = $aws->get('S3'); 
 
@@ -23,16 +25,36 @@ $snsclient = $aws->get('Sns');
 
 $sqsclient = $aws->get('Sqs');
 
+/*
+$client = S3Client::factory(array(
+    'key'    => 'AKIAILMFMBPHWZ47657Q',
+    'secret' => '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',
+));
+
+$sdbclient = SimpleDbClient::factory(array(
+    'key'    => 'AKIAILMFMBPHWZ47657Q',
+    'secret' => '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',
+    'region' => 'us-east-1',
+));
+
+$snsclient = SnsClient::factory(array(
+    'key'    => 'AKIAILMFMBPHWZ47657Q',
+    'secret' => 'AmEZUSg4ZonNxkitgjDbzxShs/E4aJJJEgT+k1JY',
+    'region' => 'us-east-1',
+));
+*/
 
 $email = str_replace("@","-",$_POST["email"]); 
 $bucket = str_replace("@", "-",$_POST["email"]).time(); 
 $phone = $_POST["phone"];
 $topic = explode("-",$email );
+
 #echo $topic[0]."\n";
 #############################################
 # Create SNS Simple Notification Service Topic for subscription
 ##############################################
-$result = $snsclient->createTopic(array(
+// gpa
+/*$result = $snsclient->createTopic(array(
     // Name is required
     'Name' => $topic[0],
 ));
@@ -60,35 +82,9 @@ $result = $snsclient->subscribe(array(
 )); } catch(InvalidParameterException $i) {
  echo 'Invalid parameter: '. $i->getMessage() . "\n";
 } 
-/*
-$result = $snsclient->createPlatformApplication(array(
-    // Name is required
-    'Name' => 'pix',
-    // Platform is required
-    'Platform' => 'ADM',
-    // Attributes is required
-    'Attributes' => array(
-        // Associative array of custom 'String' key names
-        'EventEndpointCreated' => $topicArn,
-        // ... repeated
-    ),
-));
-$PlatformApplicationArn=$result['PlatformApplicationArn'];
 
-$result = $snsclient->createPlatformEndpoint(array(
-    // PlatformApplicationArn is required
-    'PlatformApplicationArn' => $PlatformApplicationArn,
-    // Token is required
-    'Token' => 'string',
-    'CustomUserData' => 'string',
-    'Attributes' => array(
-        // Associative array of custom 'String' key names
-        'String' => 'string',
-        // ... repeated
-    ),
-));
-# see send for actual sending of text message
 */
+
 ###############################################################
 # Create S3 bucket
 ############################################################
@@ -168,6 +164,8 @@ foreach ($result['Items'] as $item) {
 #####################################################
 # SNS publishing of message to topic - which will be sent via SMS
 #####################################################
+// gpa
+/*
 $result = $snsclient->publish(array(
     'TopicArn' => $topicArn,
     'TargetArn' => $topicArn,
@@ -176,6 +174,7 @@ $result = $snsclient->publish(array(
     'Subject' => $url,
     'MessageStructure' => 'sms',
 ));
+*/
 ?>
 <html>
 <head>
@@ -188,5 +187,5 @@ Thank you <? echo $bucket ?>
 </html>
 
 </html>
-ubuntu@ip-10-151-65-11:/var/www$ 
+ubuntu@ip-10-151-65-11:/var/www$ */
 
