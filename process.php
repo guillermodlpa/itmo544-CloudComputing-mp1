@@ -25,24 +25,6 @@ $snsclient = $aws->get('Sns');
 
 $sqsclient = $aws->get('Sqs');
 
-/*
-$client = S3Client::factory(array(
-    'key'    => 'AKIAILMFMBPHWZ47657Q',
-    'secret' => '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',
-));
-
-$sdbclient = SimpleDbClient::factory(array(
-    'key'    => 'AKIAILMFMBPHWZ47657Q',
-    'secret' => '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',
-    'region' => 'us-east-1',
-));
-
-$snsclient = SnsClient::factory(array(
-    'key'    => 'AKIAILMFMBPHWZ47657Q',
-    'secret' => 'AmEZUSg4ZonNxkitgjDbzxShs/E4aJJJEgT+k1JY',
-    'region' => 'us-east-1',
-));
-*/
 
 $email = str_replace("@","-",$_POST["email"]); 
 $bucket = str_replace("@", "-",$_POST["email"]).time(); 
