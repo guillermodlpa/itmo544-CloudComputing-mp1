@@ -1,4 +1,5 @@
 *~
+.md~
 *.lock
 *.phar
 vendor
