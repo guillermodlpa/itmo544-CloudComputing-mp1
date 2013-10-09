@@ -12,6 +12,7 @@ use Aws\Sns\SnsClient;
 use Aws\Sqs\sqsclient;
 use Aws\Sns\Exception\InvalidParameterException;
 
+
 //aws factory
 
 $aws = Aws::factory('/var/www/itmo544-CloudComputing-mp1/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
@@ -24,18 +25,18 @@ $snsclient = $aws->get('Sns');
 
 $sqsclient = $aws->get('Sqs');
 
-$UUID = uniqid();
+
 $email = str_replace("@","-",$_POST["email"]); 
 $bucket = str_replace("@", "-",$_POST["email"]).time(); 
 $phone = $_POST["phone"];
 $topic = explode("-",$email );
-$itemName = 'images-'.$UUID;
+
 #echo $topic[0]."\n";
 #############################################
 # Create SNS Simple Notification Service Topic for subscription
 ##############################################
-/*
-$result = $snsclient->createTopic(array(
+// gpa
+/*$result = $snsclient->createTopic(array(
     // Name is required
     'Name' => $topic[0],
 ));
@@ -64,8 +65,8 @@ $result = $snsclient->subscribe(array(
  echo 'Invalid parameter: '. $i->getMessage() . "\n";
 } 
 
-# see send for actual sending of text message
 */
+
 ###############################################################
 # Create S3 bucket
 ############################################################
@@ -91,7 +92,6 @@ $pathToFile = $uploaddir.$_FILES['uploaded_file']['name'];
 // Upload an object by streaming the contents of a file
 // $pathToFile should be absolute path to a file on disk
 $result = $client->putObject(array(
-    'ACL'        => 'public-read',
     'Bucket'     => $bucket,
     'Key'        => $_FILES['uploaded_file']['name'],
     'SourceFile' => $pathToFile,
@@ -110,55 +110,35 @@ $url= $result['ObjectURL'];
 ###################################################
 $result = $sdbclient->createDomain(array(
     // DomainName is required
-    'DomainName' => 'itm544jrh', 
+    'DomainName' => $email, 
 ));
 
 $result = $sdbclient->putAttributes(array(
     // DomainName is required
-    'DomainName' => 'itm544jrh',
+    'DomainName' => $email,
    // ItemName is required
-    'ItemName' =>$itemName ,
+    'ItemName' => 'images',
     // Attributes is required
     'Attributes' => array(
         array(
             // Name is required
-           'Name' => 'bucket',
+           'Name' => 'rawurl',
             // Value is required
-            'Value' => $bucket,
+            'Value' => $url,
         ),
-        array(
-           'Name' => 'id',
-           'Value' => $UUID,
-            ),  
-        array(
-            'Name' =>  'email',
-            'Value' => $_POST['email'],
-         ),
-    array(
-            'Name' => 'phone',
-            'Value' => $phone,
-    ),
-         array(
-            'Name' => 'finishedurl',
-            'Value' => '',
-        ),     
-         array(
-            'Name' => 'filename',
-            'Value' => basename($_FILES['uploaded_file']['name']),
-        ), 
+       
     ),
 ));
 
-#$domains = $sdbclient->getIterator('ListDomains')->toArray();
-#var_export($domains);
+$domains = $sdbclient->getIterator('ListDomains')->toArray();
+var_export($domains);
 // Lists an array of domain names, including "mydomain"
 
-$exp="select * from  itm544jrh";
+$exp="select * from  `$email`";
 
 $result = $sdbclient->select(array(
     'SelectExpression' => $exp 
 ));
-
 foreach ($result['Items'] as $item) {
     echo $item['Name'] . "\n";
     var_export($item['Attributes']);
@@ -166,6 +146,7 @@ foreach ($result['Items'] as $item) {
 #####################################################
 # SNS publishing of message to topic - which will be sent via SMS
 #####################################################
+// gpa
 /*
 $result = $snsclient->publish(array(
     'TopicArn' => $topicArn,
@@ -175,18 +156,7 @@ $result = $snsclient->publish(array(
     'Subject' => $url,
     'MessageStructure' => 'sms',
 ));
-#####################################################
-# Code to add a Message to a queue - queue has been precreated - its just easier
-#####################################################
-$result = $sqsclient->sendMessage(array(
-    // QueueUrl is required
-    'QueueUrl' => 'https://sqs.us-east-1.amazonaws.com/602645817172/photo_q',
-    // MessageBody is required
-    'MessageBody' => $UUID,
-    'DelaySeconds' => 15,
-));
 */
-
 ?>
 <html>
 <head>
@@ -197,3 +167,7 @@ $result = $sqsclient->sendMessage(array(
 Thank you <? echo $bucket ?>
 </body>
 </html>
+
+</html>
+ubuntu@ip-10-151-65-11:/var/www$ */
+
