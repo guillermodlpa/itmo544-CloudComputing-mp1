@@ -21,6 +21,7 @@ SCRIPT_FILE=install.sh
 INSTANCE_TYPE=t1.micro
 REGION=us-east-1 
 AMI=ami-ad83d7c4  
+NUMBER_OF_INSTANCES=2
 # http://cloud-images.ubuntu.com/locator/ec2/
 
 # Check number of arguments
@@ -41,9 +42,15 @@ export PATH=$PATH:$EC2_HOME/bin
 
 
 # Create keypair, or use existing one
+if [ -e "$NAME.priv" ]
+then
+	echo 'Using existing keypair'
+fi
 if [ ! -e "$NAME.priv" ]
 then
 	ec2addkey $NAME > $NAME.priv
+	chmod 600 $NAME.priv
+	echo 'Keypair $NAME.priv created'
 fi
 
 # Create security group, or use existing one
@@ -54,7 +61,7 @@ ec2-authorize $NAME -p 22 -s 0.0.0.0/0
 
 # Launch instances
 # using the selected keypair and security group
-ec2-run-instances --region $REGION $AMI -n 2 -t $INSTANCE_TYPE -f $SCRIPT_FILE -k $NAME -g $NAME 
+ec2-run-instances --region $REGION $AMI -n $NUMBER_OF_INSTANCES -t $INSTANCE_TYPE -f $SCRIPT_FILE -k $NAME -g $NAME 
 
 # Name instances
 #> tmp
