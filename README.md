@@ -1,3 +1,4 @@
+Cloud Computing Mini Project 1 Fall 2013
 itmo544-CloudComputing-mp1
 ==========================
 

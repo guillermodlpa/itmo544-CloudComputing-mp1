@@ -11,5 +11,6 @@ sudo apt-get -y update
 sudo apt-get -y install git apache2 php5 php5-curl php5-cli curl
 
 sudo service apache2 restart
+cd ~
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
