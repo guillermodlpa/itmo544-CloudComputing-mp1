@@ -5,10 +5,15 @@
 # ITMO 544 Cloud Computing - Mini Project 1 
 #
 # Setup of environment to run PHP project
+#
+# Script B -
+# install.sh will pull all system pre-reqs and required libraries and install AWS
+# SDK library via composer as well as wget your project down and deploy it to the correct
+# directory copying your custom-config.php to the correct location.
 ################################################
 
 sudo apt-get -y update 
-sudo apt-get -y install git apache2 php5 php5-curl php5-cli curl unzip
+sudo apt-get -y install git apache2 php5 php5-curl php5-cli curl unzip php5-gd
 
 sudo service apache2 restart
 
