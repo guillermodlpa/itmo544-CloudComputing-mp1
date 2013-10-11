@@ -4,6 +4,9 @@
 # Illinois Institute of Technology
 # ITMO 544 Cloud Computing - Mini Project 1 
 #
+# Student: Guillermo de la Puente
+#          https://github.com/gpuenteallott
+#
 # Script A - 
 # installenv.sh will run and launch ec2-run-instances quantity of 2 instances
 # launching an instance of Ubuntu server and passing the install.sh to it via -f
@@ -14,7 +17,7 @@
 # same script or another PHP script run from the command line 1 time
 #
 # Usage:
-#        ./installenv.sh name AWS_ACCESS_KEY AWS_SECRET KEY
+#        ./installenv.sh name name AWS_ACCESS_KEY AWS_SECRET KEY
 #        name is the identificator of instances, keypair and security group
 #
 # Example: ./installenv.sh itmo544 key secret
@@ -34,7 +37,7 @@ NUMBER_OF_INSTANCES=2
 # Check number of arguments
 if [ $# != 3 ]; then
 	echo 'Usage:'
-	echo '        ./installenv.sh AWS_ACCESS_KEY AWS_SECRET KEY'
+	echo '        name ./installenv.sh AWS_ACCESS_KEY AWS_SECRET KEY'
 	echo 'name is the identificator of instances, keypair and security group'
 	exit 1
 fi
@@ -54,25 +57,36 @@ export PATH=$PATH:$EC2_HOME/bin:$AWS_ELB_HOME/bin
 # Create keypair, or use existing one
 if [ -e "$NAME.priv" ]
 then
-	echo 'Using existing keypair'
+	echo "EC2: Using existing keypair $NAME.priv"
 fi
 if [ ! -e "$NAME.priv" ]
 then
 	ec2addkey $NAME > $NAME.priv
 	chmod 600 $NAME.priv
-	echo 'Keypair $NAME.priv created'
+	echo "EC2: Keypair $NAME.priv created"
 fi
 
 # Create security group, or use existing one
 # Access to ports 80 and 22 from all IP adresses
-ec2addgrp --region=$REGION $NAME_GRP -d "Security group for the instances with identifier $NAME"
-ec2-authorize $NAME_GRP -p 80 -s 0.0.0.0/0
-ec2-authorize $NAME_GRP -p 22 -s 0.0.0.0/0
+printf "EC2: Security group   " && ec2addgrp --region=$REGION $NAME_GRP -d "Security group for the instances with identifier $NAME"
+printf "EC2: Security group   " && ec2-authorize $NAME_GRP -p 80 -s 0.0.0.0/0
+printf "EC2: Security group   " && ec2-authorize $NAME_GRP -p 22 -s 0.0.0.0/0
+printf "EC2: Security group   " && ec2-authorize $NAME_GRP -p 8080 -s 0.0.0.0/0
 
 # Launch instances
 # using the selected keypair and security group
 # Save the ID of the new instances
 ec2-run-instances --region $REGION $AMI -n $NUMBER_OF_INSTANCES -t $INSTANCE_TYPE -f $SCRIPT_FILE -k $NAME -g $NAME_GRP | awk '{print $2}' | grep -E -o i-[0-9a-zA-Z]* > instance_ids
+echo "EC2: $NUMBER_OF_INSTANCES instances started"
+
+# Change name to the instances
+i=1
+while read line
+do
+    printf "EC2: " && ec2tag $line --tag Name=$NAME-$i
+    line=
+    i=$(($i + 1))
+done < instance_ids
 
 #Create aws credentials file
 # ELB needs this file, the environment variables wont work :(
@@ -80,14 +94,24 @@ echo AWSAccessKeyId=$2 > aws_credentials_file
 echo AWSSecretKey=$3 >> aws_credentials_file
 
 # Create Elastic Load Balancer
-elb-create-lb $NAME_ELB --listener "lb-port=80,instance-port=8080,protocol=http" --region $REGION --aws-credential-file aws_credentials_file -z $AVAIL_ZONES
+printf "Load Balancer:  " &&  elb-create-lb $NAME_ELB --listener "lb-port=80,instance-port=8080,protocol=http" --region $REGION --aws-credential-file aws_credentials_file -z $AVAIL_ZONES
 
+# Configure healthchek, otherwise it will fail automatically
+# Thresholds, interval and timeout set to default values
+printf "Load Balancer Health Check:  " &&  elb-configure-healthcheck $NAME_ELB --healthy-threshold 10 --interval 30 -t http:80/index.php --timeout 5 --unhealthy-threshold 2 --aws-credential-file aws_credentials_file
+
+i=1
 while read line
 do
-    echo "Registering $line in the load balancer"
+    echo "ELB: Step $i - Registered instances"
     elb-register-instances-with-lb $NAME_ELB --instances $line --aws-credential-file aws_credentials_file
     line=
+    i=$(($i + 1))
 done < instance_ids
 
 # Remove aws credentials file
 rm aws_credentials_file
+rm instance_ids
+
+echo "Load Balancer: setup completed"
+echo "Done. It might take a few minutes to the instances and load balancer to be ready"
