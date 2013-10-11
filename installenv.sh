@@ -21,8 +21,7 @@
 #        name is the identificator of instances, keypair and security group
 #
 # Example: ./installenv.sh itmo544 key secret
-################################################
-
+################################################ 
 
 EC2_API_TOOLS=~/ec2-api-tools-1.6.10.1
 AWS_ELB_TOOLS=~/ElasticLoadBalancing-1.0.17.0
@@ -113,5 +112,12 @@ done < instance_ids
 rm aws_credentials_file
 rm instance_ids
 
-echo "Load Balancer: setup completed"
-echo "Done. It might take a few minutes to the instances and load balancer to be ready"
+echo "Load Balancer: setup completed. It might take a few minutes to the system to be ready"
+
+# Setup aws credentials file for PHP script
+cp custom-config-template.php custom-config.php
+sed -i "s/AWS_ACCESS_KEY/$2/g" custom-config.php
+sed -i "s/AWS_SECRET_KEY/$3/g" custom-config.php
+
+# Execute PHP setup script
+php install.php itmo544 "/var/www/itmo544-CloudComputing-mp1/custom-config.php"

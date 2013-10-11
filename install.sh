@@ -4,6 +4,9 @@
 # Illinois Institute of Technology
 # ITMO 544 Cloud Computing - Mini Project 1 
 #
+# Student: Guillermo de la Puente
+#          https://github.com/gpuenteallott
+#
 # Setup of environment to run PHP project
 #
 # Script B -
