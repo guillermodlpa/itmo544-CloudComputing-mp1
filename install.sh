@@ -15,9 +15,13 @@
 # directory copying your custom-config.php to the correct location.
 ################################################
 
+# This are the AWS credentials for the server
+# They will be dinamically added from this file by installenv.sh
+AWS_ACCESS_KEY=
+AWS_SECRET_KEY=
+
 sudo apt-get -y update 
 sudo apt-get -y install git apache2 php5 php5-curl php5-cli curl unzip php5-gd
-
 
 # To allow the load balancer to listen in port 80, we must allow apache to work in other port as well
 # We will use port 8080
@@ -48,3 +52,12 @@ sudo rm index.html # remove default apache2 welcome
 
 # Install libraries
 sudo php composer.phar install
+
+cp -f custom-config-template.php /var/www/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php
+
+# Setup aws credentials file for PHP
+# The string "########" is used to avoid problems with slashes while using 'sed'
+sed -i "s/AWS_ACCESS_KEY/$AWS_ACCESS_KEY/g" /var/www/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php
+sed -i "s/AWS_SECRET_KEY/$AWS_SECRET_KEY/g" /var/www/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php
+# The secret came with slashes converted into ######## to avoid problems
+sed -i "s/########/\//g" /var/www/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php

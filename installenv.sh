@@ -72,10 +72,21 @@ printf "EC2: Security group   " && ec2-authorize $NAME_GRP -p 80 -s 0.0.0.0/0
 printf "EC2: Security group   " && ec2-authorize $NAME_GRP -p 22 -s 0.0.0.0/0
 printf "EC2: Security group   " && ec2-authorize $NAME_GRP -p 8080 -s 0.0.0.0/0
 
+# Modify the install.sh script to include the AWS security credentials for the servers
+# We will pass the EC2 instance the modified script file which includes the files
+echo "EC2: Modifying install script on the fly to include AWS credentials"
+cp -f $SCRIPT_FILE $SCRIPT_FILE.tmp
+sed -i "s/AWS_ACCESS_KEY=/AWS_ACCESS_KEY=$2/g" $SCRIPT_FILE.tmp
+SECRET_SCAPED=`echo $3 | sed -e 's/[\/&]/########/g'`
+sed -i "s/AWS_SECRET_KEY=/AWS_SECRET_KEY=$SECRET_SCAPED/g" $SCRIPT_FILE.tmp
+# We sent the secret slashes encoded with the char sequence ########
+
+cat $SCRIPT_FILE.tmp
+
 # Launch instances
 # using the selected keypair and security group
 # Save the ID of the new instances
-ec2-run-instances --region $REGION $AMI -n $NUMBER_OF_INSTANCES -t $INSTANCE_TYPE -f $SCRIPT_FILE -k $NAME -g $NAME_GRP | awk '{print $2}' | grep -E -o i-[0-9a-zA-Z]* > instance_ids
+ec2-run-instances --region $REGION $AMI -n $NUMBER_OF_INSTANCES -t $INSTANCE_TYPE -f $SCRIPT_FILE.tmp -k $NAME -g $NAME_GRP | awk '{print $2}' | grep -E -o i-[0-9a-zA-Z]* > instance_ids
 echo "EC2: $NUMBER_OF_INSTANCES instances started"
 
 # Change name to the instances
@@ -111,6 +122,7 @@ done < instance_ids
 # Remove aws credentials file
 rm aws_credentials_file
 rm instance_ids
+rm $SCRIPT_FILE.tmp
 
 echo "Load Balancer: setup completed. It might take a few minutes to the system to be ready"
 

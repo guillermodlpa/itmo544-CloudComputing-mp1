@@ -194,6 +194,5 @@ $result = $sqsclient->sendMessage(array(
 <body>
     <h1>Request processed</h1>
     <p>Thank you <? echo $bucket ?></p>
-    <p>You may receive notifications via SMS</p>
 </body>
 </html>
