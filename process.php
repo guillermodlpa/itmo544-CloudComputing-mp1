@@ -12,8 +12,6 @@ use Aws\Sns\SnsClient;
 use Aws\Sqs\sqsclient;
 use Aws\Sns\Exception\InvalidParameterException;
 
-//aws factory
-
 $aws = Aws::factory('/var/www/itmo544-CloudComputing-mp1/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
 
 $client = $aws->get('S3'); 
@@ -190,10 +188,12 @@ $result = $sqsclient->sendMessage(array(
 ?>
 <html>
 <head>
-<title>Title of the document</title>
+<title>Process</title>
 </head>
 
 <body>
-Thank you <? echo $bucket ?>
+    <h1>Request processed</h1>
+    <p>Thank you <? echo $bucket ?></p>
+    <p>You may receive notifications via SMS</p>
 </body>
 </html>
