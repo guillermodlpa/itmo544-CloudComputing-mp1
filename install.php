@@ -40,14 +40,17 @@ $sqsclient = $aws->get('Sqs');
 $result = $sdbclient->createDomain(array(
     'DomainName' => "$argv[1]-sdb",
 ));
+echo "SDB: domain $argv[1]-sdb created\n";
 
 # Create SQS queue
 $result = $sqsclient->createQueue(array(
 	'QueueName' => "$argv[1]-sqs",
 	'Attributes' => array(),
 ));
+echo "SQS: queue $argv[1]-sqs created\n";
 
 # Create SNS Client with a topic that matches the argument name
 $result = $snsclient->createTopic(array(
     'Name' => "$argv[1]-sns",
 ));
+echo "SNS: topic $argv[1]-sns created\n";

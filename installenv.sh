@@ -115,9 +115,14 @@ rm instance_ids
 echo "Load Balancer: setup completed. It might take a few minutes to the system to be ready"
 
 # Setup aws credentials file for PHP script
-cp custom-config-template.php custom-config.php
+# The string "########" is used to avoid problems with slashes while using 'sed'
+cp -f custom-config-template.php custom-config.php
 sed -i "s/AWS_ACCESS_KEY/$2/g" custom-config.php
-sed -i "s/AWS_SECRET_KEY/$3/g" custom-config.php
+SECRET_SCAPED=`echo $3 | sed -e 's/[\/&]/########/g'`
+sed -i "s/AWS_SECRET_KEY/$SECRET_SCAPED/g" custom-config.php
+sed -i "s/########/\//g" custom-config.php
 
 # Execute PHP setup script
 php install.php itmo544 "/var/www/itmo544-CloudComputing-mp1/custom-config.php"
+
+rm custom-config.php
