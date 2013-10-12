@@ -20,6 +20,12 @@
 AWS_ACCESS_KEY=
 AWS_SECRET_KEY=
 
+# This is the name given by the user when deploying the system though script
+# It will be used by the PHP code to name buckets and other resources,
+# as well as to access them
+# It's value is dinamically inserted from installenv.sh
+NAME=
+
 sudo apt-get -y update 
 sudo apt-get -y install git apache2 php5 php5-curl php5-cli curl unzip php5-gd
 
@@ -61,3 +67,6 @@ sed -i "s/AWS_ACCESS_KEY/$AWS_ACCESS_KEY/g" /var/www/vendor/aws/aws-sdk-php/src/
 sed -i "s/AWS_SECRET_KEY/$AWS_SECRET_KEY/g" /var/www/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php
 # The secret came with slashes converted into ######## to avoid problems
 sed -i "s/########/\//g" /var/www/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php
+
+# Save a file with the name in the webapp directory
+echo $NAME > /var/www/name.txt

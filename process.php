@@ -1,9 +1,10 @@
-<!DOCTYPE html>
 <?php
 
 // Include the SDK using the Composer autoloader
 require 'vendor/autoload.php';
-header("Content-type: text/plain; charset=utf-8");
+
+# Uncomment this for better debugging
+#header("Content-type: text/plain; charset=utf-8");
 
 use Aws\Common\Aws;
 use Aws\SimpleDb\SimpleDbClient;
@@ -22,12 +23,23 @@ $snsclient = $aws->get('Sns');
 
 $sqsclient = $aws->get('Sqs');
 
+
+# Read the name file
+$NAME = file_get_contents("name.txt");
+
+
+
 $UUID = uniqid();
 $email = str_replace("@","-",$_POST["email"]); 
-$bucket = str_replace("@", "-",$_POST["email"]).time(); 
+$bucket = str_replace("@", "-",$_POST["email"]).time();
+$bucket = "$NAME-s3-$bucket"; 
 $phone = $_POST["phone"];
-$topic = explode("-",$email );
+# Previous topic configuration
+#$topic = explode("-",$email );
+$topic = "$NAME-sns";
 $itemName = 'images-'.$UUID;
+
+
 #echo $topic[0]."\n";
 #############################################
 # Create SNS Simple Notification Service Topic for subscription
@@ -35,7 +47,7 @@ $itemName = 'images-'.$UUID;
 /*
 $result = $snsclient->createTopic(array(
     // Name is required
-    'Name' => $topic[0],
+    'Name' => $topic,
 ));
 
 $topicArn = $result['TopicArn'];
@@ -48,14 +60,14 @@ $result = $snsclient->setTopicAttributes(array(
     'TopicArn' => $topicArn,
     // AttributeName is required
     'AttributeName' => 'DisplayName',
-    'AttributeValue' => 'aws544',
+    'AttributeValue' => "$NAME",
 ));
 
 try {
 $result = $snsclient->subscribe(array(
-    // TopicArn is required
+
     'TopicArn' => $topicArn,
-    // Protocol is required
+
     'Protocol' => 'sms',
     'Endpoint' => $phone,
 )); } catch(InvalidParameterException $i) {
@@ -63,10 +75,17 @@ $result = $snsclient->subscribe(array(
 } 
 
 # see send for actual sending of text message
+
 */
+
+
 ###############################################################
-# Create S3 bucket
-############################################################
+# S3
+# add uploaded photo to a S3 bucket called after the user email
+# set metadata tags for a md5 hash and an epoch timestamp
+# return S3 URI for uploaded object
+###############################################################
+
 $result = $client->createBucket(array(
     'Bucket' => $bucket
 ));
@@ -102,26 +121,36 @@ print "#############################\n";
 var_export($result->getkeys());
 // this gets all the key value pairs and exports them as system variables making our lives nice so we don't have to do this manually. 
 
+# S3 URI for uploaded object
 $url= $result['ObjectURL'];
+
+
+
+
 ####################################################
-# SimpleDB create here - note no error checking
+# SimpleDB
+# create Item in SimpleDB that contains:
+# rawurl, email, bucketname, filename, phone, id, finishedurl
+# The initial value of finishedurl is empty, will be filled when the processing is done
 ###################################################
+
+# The domain was already created in setup
+# Just in case, to avoid potential errors, create it
 $result = $sdbclient->createDomain(array(
-    // DomainName is required
-    'DomainName' => 'itm544jrh', 
+    'DomainName' => "$NAME-sdb", 
 ));
 
 $result = $sdbclient->putAttributes(array(
-    // DomainName is required
-    'DomainName' => 'itm544jrh',
-   // ItemName is required
+
+    'DomainName' => "$NAME-sdb",
     'ItemName' =>$itemName ,
-    // Attributes is required
     'Attributes' => array(
         array(
-            // Name is required
+           'Name' => 'rawurl',
+            'Value' => $url,
+        ),
+        array(
            'Name' => 'bucket',
-            // Value is required
             'Value' => $bucket,
         ),
         array(
@@ -132,10 +161,10 @@ $result = $sdbclient->putAttributes(array(
             'Name' =>  'email',
             'Value' => $_POST['email'],
          ),
-    array(
+        array(
             'Name' => 'phone',
             'Value' => $phone,
-    ),
+        ),
          array(
             'Name' => 'finishedurl',
             'Value' => '',
@@ -147,20 +176,7 @@ $result = $sdbclient->putAttributes(array(
     ),
 ));
 
-#$domains = $sdbclient->getIterator('ListDomains')->toArray();
-#var_export($domains);
-// Lists an array of domain names, including "mydomain"
 
-$exp="select * from  itm544jrh";
-
-$result = $sdbclient->select(array(
-    'SelectExpression' => $exp 
-));
-
-foreach ($result['Items'] as $item) {
-    echo $item['Name'] . "\n";
-    var_export($item['Attributes']);
-}
 #####################################################
 # SNS publishing of message to topic - which will be sent via SMS
 #####################################################
@@ -173,26 +189,48 @@ $result = $snsclient->publish(array(
     'Subject' => $url,
     'MessageStructure' => 'sms',
 ));
+*/
+
 #####################################################
-# Code to add a Message to a queue - queue has been precreated - its just easier
+# SQS
+# place a queue with the id as the sqs body
 #####################################################
+
+# Obtain the SQS url for the given name
+$sqs_queue_url = $sqsclient->getQueueUrl(array(
+    'QueueName' => "$NAME-sqs",
+));
+var_export($sqs_queue_url->getkeys());
+$sqs_queue_url = $sqs_queue_url['QueueUrl'];
+
+# Send the message
 $result = $sqsclient->sendMessage(array(
-    // QueueUrl is required
-    'QueueUrl' => 'https://sqs.us-east-1.amazonaws.com/602645817172/photo_q',
-    // MessageBody is required
+
+    'QueueUrl' => $sqs_queue_url,
     'MessageBody' => $UUID,
     'DelaySeconds' => 15,
 ));
-*/
+
 
 ?>
+<!DOCTYPE html>
 <html>
 <head>
-<title>Process</title>
+    <title>Process</title>
 </head>
 
 <body>
-    <h1>Request processed</h1>
-    <p>Thank you <? echo $bucket ?></p>
+    <h1>Picture Uploader</h1>
+
+    <p>A mini project for ITMO 544 - Cloud Computing</p>
+    <p>Illinois Institute of Technology</p>
+    <p>Student: Guillermo de la Puente</p>
+    <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+
+    <h2>Fill the following form</h2>
+
+
+    <p>Thank you</p>
+    <p>S3 bucket: <? echo $bucket ?></p>
 </body>
 </html>
