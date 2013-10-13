@@ -32,10 +32,10 @@
 	<h2>Fill the following form</h2>
 
 	<form action="process.php" method="post" enctype="multipart/form-data">
-	  <p><label>Email: <input type="text" name="email" ></label></p>
-	  <p><label>Cell Number: <input type="text" name="phone" placeholder="1-333-555-7777"></label></p>
-	  <p><label>Choose Image: <input type="file" name="uploaded_file" id="uploaded_file"></label></p>
-	  <input type="submit"  value="submit it!" >
+	  <p><label>Email: <input type="text" name="email" required/></label></p>
+	  <p><label>Cell Number: <input type="text" name="phone" placeholder="1-333-555-7777" required/></label></p>
+	  <p><label>Choose Image: <input type="file" name="uploaded_file" id="uploaded_file" required/></label></p>
+	  <input type="submit"  value="submit it!"/>
 	</form>
 	<p>Note: You may receive notifications via SMS</p>
 

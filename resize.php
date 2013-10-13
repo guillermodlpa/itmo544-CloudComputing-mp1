@@ -190,8 +190,11 @@ function addStamp($image)
     // width to calculate positioning of the stamp. 
     imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($im) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
 
-    // Output and free memory*/
+   
+    # (Commented) This cannot be here, problems with outputing resize.php as HTML
     header('Content-type: image/png');
+
+    // Output and free memory*/
     imagepng($im, $image);
     imagedestroy($im);
     imagedestroy($stamp);
