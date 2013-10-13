@@ -52,7 +52,7 @@ $NAME = file_get_contents("name.txt");
 $UUID = uniqid();
 $email = str_replace("@","-",$_POST["email"]); 
 $bucket = str_replace("@", "-",$_POST["email"]).time();
-$bucket = "$NAME-s3-$bucket"; 
+$bucket = trim("$NAME-s3-$bucket"); 
 print "bucket name: $bucket\n";
 $phone = $_POST["phone"];
 # Previous topic configuration
