@@ -153,12 +153,14 @@ foreach ($iterator as $item) {
 # be hard coded https://s3.amazonaws.com
 ############################################################################
 $s3urlprefix = 'https://s3.amazonaws.com/';
-$localfilename = $filename;
+$localfilename = "./tmp/$filename";
+echo "Getting object $filename from bucket $bucket . Saving at $localfilename";
 $result = $client->getObject(array(
     'Bucket' => $bucket,
     'Key'    => $filename,
     'SaveAs' => $localfilename,
 ));
+echo "Done";
 ############################################################################
 #  Now that we have called the s3 object and downloaded (getObject) the file
 # to our local system - lets pass the file to our watermark library 
