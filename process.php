@@ -31,8 +31,8 @@ use Aws\S3\S3Client;
 use Aws\Sns\SnsClient;
 use Aws\Sqs\sqsclient;
 use Aws\Sns\Exception\InvalidParameterException;
-
-$aws = Aws::factory('vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
+print "started";
+$aws = Aws::factory('./vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
 
 $client = $aws->get('S3'); 
 
@@ -53,6 +53,7 @@ $UUID = uniqid();
 $email = str_replace("@","-",$_POST["email"]); 
 $bucket = str_replace("@", "-",$_POST["email"]).time();
 $bucket = "$NAME-s3-$bucket"; 
+print "bucket name: $bucket\n";
 $phone = $_POST["phone"];
 # Previous topic configuration
 #$topic = explode("-",$email );
@@ -109,10 +110,10 @@ $result = $snsclient->subscribe(array(
 $result = $client->createBucket(array(
     'Bucket' => $bucket
 ));
-
+print "bucket creating: $bucket\n";
 // Wait until the bucket is created
 $client->waitUntil('BucketExists', array('Bucket' => $bucket));
-
+print "bucket created: $bucket\n";
 $uploaddir = '/tmp/';
 $uploadfile = $uploaddir . basename($_FILES['uploaded_file']['name']);
 echo $uploadfile. "\n";
