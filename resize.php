@@ -125,6 +125,8 @@ foreach ($iterator as $item) {
                 echo "RawURL Value is: ". $attribute['Value']."\n";
                 $rawurl = $attribute['Value'];
                 break;
+           # This case is wrong
+           # The value is empty for finishedurl, which causes problems when getting its value
            #case "finishedurl":
            #     echo "Finished URL Value is: ". $attribute['Value']."\n";
            #     $finishedurl = $attribute['Value'];
@@ -177,7 +179,7 @@ function addStamp($image)
     // http://php.net/manual/en/function.imagecreatefromgif.php
     $stamp = imagecreatefromgif('./happy_trans.gif');
     $im = imagecreatefromjpeg($image);
-
+    /*
     // Set the margins for the stamp and get the height/width of the stamp image
     $marge_right = 10;
     $marge_bottom = 10;
@@ -188,10 +190,11 @@ function addStamp($image)
     // width to calculate positioning of the stamp. 
     imagecopy($im, $stamp, imagesx($im) - $sx - $marge_right, imagesy($im) - $sy - $marge_bottom, 0, 0, imagesx($stamp), imagesy($stamp));
 
-    // Output and free memory
+    // Output and free memory*/
     header('Content-type: image/png');
-    imagepng($im);
+    imagepng($im, $image);
     imagedestroy($im);
+    imagedestroy($stamp);
 
 } // end of function
 
@@ -210,6 +213,6 @@ function addStamp($image)
     <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
 
     <h2>Resize</h2>
-    <img src="/tmp/<? echo $filename ?>" />
+    <img src="/tmp/<? echo $localfilename ?>" />
 </body>
 </html>
