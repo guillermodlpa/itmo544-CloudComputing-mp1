@@ -176,7 +176,7 @@ addStamp($localfilename);
 # Upload the new image to the bucket
 ############################################################################
 
-$newFilename = substr($filename, strlen($filename)-4) . "_new.jpg";
+$newFilename = str_replace(".jpg", "_new.jpg", $filename);
 
 $result = $client->putObject(array(
     'ACL'        => 'public-read',
@@ -195,6 +195,27 @@ $client->waitUntilObjectExists(array(
 
 var_export($result->getkeys());
 $newUrl= $result['ObjectURL'];
+
+############################################################################
+# SDB
+# Update the record of this object to include the finished url information
+############################################################################
+
+$itemName = 'images-'.$id;
+
+$result = $sdbclient->putAttributes(array(
+
+    'DomainName' => "$NAME_SDB",
+    'ItemName' =>$itemName ,
+    'Attributes' => array(
+         array(
+            'Name' => 'finishedurl',
+            'Value' => $newUrl,
+            'Replace' => true
+        )
+    ),
+));
+
 
 #########################################################################
 # PHP function for adding a "stamp" or watermark through the php gd library
@@ -250,5 +271,7 @@ function addStamp($image)
 
     <p>Previous image in S3</p>
     <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
+
+     <p>Continue to next step --> <a href="cleanup.php">Clean Up</a></p>
 </body>
 </html>
