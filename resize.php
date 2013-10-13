@@ -125,10 +125,10 @@ foreach ($iterator as $item) {
                 echo "RawURL Value is: ". $attribute['Value']."\n";
                 $rawurl = $attribute['Value'];
                 break;
-           case "finishedurl":
-                echo "Finished URL Value is: ". $attribute['Value']."\n";
-                $finishedurl = $attribute['Value'];
-                break;
+           #case "finishedurl":
+           #     echo "Finished URL Value is: ". $attribute['Value']."\n";
+           #     $finishedurl = $attribute['Value'];
+           #     break;
            case "filename":
                 echo "Filename Value is: ". $attribute['Value']."\n";
                 $filename = $attribute['Value'];
@@ -137,8 +137,8 @@ foreach ($iterator as $item) {
                 echo "Phone Value is: ". $attribute['Value']."\n";
                 $phone = $attribute['Value'];
                 break;
-           default: 
-                echo "Unable to figure out - " . $attribute['Name'] ." = " . $attribute['Value'];
+           #default: 
+           #     echo "Unable to figure out - " . $attribute['Name'] ." = " . $attribute['Value'];
 
         } // end of switch 
  #     } // end of if
