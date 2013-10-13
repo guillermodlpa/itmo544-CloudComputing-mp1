@@ -246,9 +246,9 @@ function addStamp($image)
     <img src="<? echo $localfilename ?>" />
 
     <p>Remote image in S3</p>
-    <img src="<? echo $s3urlprefix.$bucket.$newUrl ?>" />
+    <img src="<? echo $newUrl ?>" />
 
     <p>Previous image in S3</p>
-    <img src="<? echo $s3urlprefix.$bucket.$filename ?>" />
+    <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
 </body>
 </html>
