@@ -19,7 +19,7 @@
 
 // Include the SDK using the Composer autoloader
 require 'vendor/autoload.php';
-header("Content-type: text/plain; charset=utf-8");
+#header("Content-type: text/plain; charset=utf-8");
 
 use Aws\SimpleDb\SimpleDbClient;
 use Aws\S3\S3Client;
@@ -179,7 +179,7 @@ function addStamp($image)
     // http://php.net/manual/en/function.imagecreatefromgif.php
     $stamp = imagecreatefromgif('./happy_trans.gif');
     $im = imagecreatefromjpeg($image);
-    /*
+    
     // Set the margins for the stamp and get the height/width of the stamp image
     $marge_right = 10;
     $marge_bottom = 10;
@@ -192,9 +192,9 @@ function addStamp($image)
 
    
     # (Commented) This cannot be here, problems with outputing resize.php as HTML
-    header('Content-type: image/png');
+    # header('Content-type: image/png');
 
-    // Output and free memory*/
+    // Output and free memory
     imagepng($im, $image);
     imagedestroy($im);
     imagedestroy($stamp);
@@ -216,6 +216,6 @@ function addStamp($image)
     <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
 
     <h2>Resize</h2>
-    <img src="/tmp/<? echo $localfilename ?>" />
+    <img src="<? echo $localfilename ?>" />
 </body>
 </html>
