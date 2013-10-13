@@ -136,6 +136,6 @@ sed -i "s/AWS_SECRET_KEY/$SECRET_SCAPED/g" custom-config.php
 sed -i "s/########/\//g" custom-config.php
 
 # Execute PHP setup script
-php install.php itmo544 "/var/www/itmo544-CloudComputing-mp1/custom-config.php"
+php install.php $NAME "/var/www/itmo544-CloudComputing-mp1/custom-config.php"
 
 rm custom-config.php
