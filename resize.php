@@ -63,9 +63,10 @@ $result = $sqsclient->receiveMessage(array(
     'MaxNumberOfMessages' => 1, 
 ));
 
-######################################3
+######################################
 # Probably need some logic in here to handle delays
 ######################################
+
 foreach ($result->getPath('Messages/*/Body') as $messageBody) {
     // Do something with the message
     echo "SQS: " . $messageBody . "\n";
@@ -75,7 +76,7 @@ foreach ($result->getPath('Messages/*/Body') as $messageBody) {
 ##############################################
 # Select from SimpleDB element where id = the id in the Queue
 ##############################################
-$exp = "select * from $NAME-sdb where id = '$mbody'";
+$exp = "select * from $NAME_sdb where id = '$mbody'";
 echo "\n".$exp."\n";
 
 try {

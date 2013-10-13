@@ -34,10 +34,11 @@ $snsclient = $aws->get('Sns');
 $sqsclient = $aws->get('Sqs');
 
 # Create SimpleDB domain
+# sdb must use _ instead of - because the query syntax doesn't allow dashes
 $result = $sdbclient->createDomain(array(
-    'DomainName' => "$argv[1]-sdb",
+    'DomainName' => "$argv[1]_sdb",
 ));
-echo "SDB: domain $argv[1]-sdb created\n";
+echo "SDB: domain $argv[1]_sdb created\n";
 
 # Create SQS queue
 $result = $sqsclient->createQueue(array(
