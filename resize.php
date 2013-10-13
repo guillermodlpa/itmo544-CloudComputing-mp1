@@ -170,6 +170,32 @@ echo "Done";
 ###########################################################################
 addStamp($localfilename);
 
+
+############################################################################
+# S3
+# Upload the new image to the bucket
+############################################################################
+
+$newFilename = substr($filename, strlen($filename)-4) . "_new.jpg";
+
+$result = $client->putObject(array(
+    'ACL'        => 'public-read',
+    'Bucket'     => $bucket,
+    'Key'        => $newFilename,
+    'SourceFile' => $localfilename,
+    'Metadata'   => array(
+        'timestamp' => time(),
+        'md5' =>  md5_file($localfilename),
+    )
+));
+$client->waitUntilObjectExists(array(
+    'Bucket' => $bucket,
+    'Key'    => $newFilename
+));
+
+var_export($result->getkeys());
+$newUrl= $result['ObjectURL'];
+
 #########################################################################
 # PHP function for adding a "stamp" or watermark through the php gd library
 #########################################################################
@@ -216,7 +242,13 @@ function addStamp($image)
     <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
 
     <h2>Resize</h2>
+    <p>Local image in server</p>
     <img src="<? echo $localfilename ?>" />
-    
+
+    <p>Remote image in S3</p>
+    <img src="<? echo $s3urlprefix.$bucket.$newUrl ?>" />
+
+    <p>Previous image in S3</p>
+    <img src="<? echo $s3urlprefix.$bucket.$filename ?>" />
 </body>
 </html>
