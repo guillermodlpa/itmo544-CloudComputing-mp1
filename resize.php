@@ -217,5 +217,6 @@ function addStamp($image)
 
     <h2>Resize</h2>
     <img src="<? echo $localfilename ?>" />
+    
 </body>
 </html>

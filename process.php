@@ -253,5 +253,7 @@ $result = $sqsclient->sendMessage(array(
 
     <p>Thank you</p>
     <p>S3 bucket: <? echo $bucket ?></p>
+
+    <p>Continue to next step --> <a href="resize.php">Resize</a></p>
 </body>
 </html>
