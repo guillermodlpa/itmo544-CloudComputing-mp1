@@ -26,8 +26,8 @@ AWS_SECRET_KEY=
 # It's value is dinamically inserted from installenv.sh
 NAME=
 
-apt-get -y update 
-apt-get -y install git apache2 php5 php5-curl php5-cli curl unzip php5-gd
+sudo apt-get -y update 
+sudo apt-get -y install git apache2 php5 php5-curl php5-cli curl unzip php5-gd
 
 # To allow the load balancer to listen in port 80, we must allow apache to work in other port as well
 # We will use port 8080
@@ -47,17 +47,17 @@ cd /var/www
 curl -sS https://getcomposer.org/installer | php
 
 # Get project
-wget https://github.com/gpuenteallott/itmo544-CloudComputing-mp1/archive/master.zip
-unzip master.zip
+sudo wget https://github.com/gpuenteallott/itmo544-CloudComputing-mp1/archive/master.zip
+sudo unzip master.zip
 shopt -s dotglob # include hidden files in mv operation
-mv itmo544-CloudComputing-mp1-master/* /var/www
+sudo mv itmo544-CloudComputing-mp1-master/* /var/www
 shopt -u dotglob # restore default behaviour
-rm master.zip
-rmdir itmo544-CloudComputing-mp1-master
-rm index.html # remove default apache2 welcome
+sudo rm master.zip
+sudo rmdir itmo544-CloudComputing-mp1-master
+sudo rm index.html # remove default apache2 welcome
 
 # Install libraries
-php composer.phar install
+sudo php composer.phar install
 
 # Create temporary dir for the webapp
 mkdir /var/www/tmp
