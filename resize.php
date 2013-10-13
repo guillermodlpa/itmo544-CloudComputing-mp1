@@ -153,7 +153,7 @@ foreach ($iterator as $item) {
 # be hard coded https://s3.amazonaws.com
 ############################################################################
 $s3urlprefix = 'https://s3.amazonaws.com/';
-$localfilename = "/tmp/" . $filename;
+$localfilename = $filename;
 $result = $client->getObject(array(
     'Bucket' => $bucket,
     'Key'    => $filename,
