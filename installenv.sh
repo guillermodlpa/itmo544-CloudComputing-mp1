@@ -84,8 +84,6 @@ sed -i "s/AWS_SECRET_KEY=/AWS_SECRET_KEY=$SECRET_SCAPED/g" $SCRIPT_FILE.tmp
 # Modify install.sh to include the name given by the user
 sed -i "s/NAME=/NAME=$NAME/g" $SCRIPT_FILE.tmp
 
-cat $SCRIPT_FILE.tmp
-
 # Launch instances
 # using the selected keypair and security group
 # Save the ID of the new instances

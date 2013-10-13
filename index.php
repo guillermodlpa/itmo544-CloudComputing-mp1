@@ -1,3 +1,20 @@
+<?php
+################################################
+# Illinois Institute of Technology
+# ITMO 544 Cloud Computing - Mini Project 1 
+#
+# Student: Guillermo de la Puente
+#          https://github.com/gpuenteallott
+#
+# index.php
+# - will have a basic form that asks for email, phone, and a picture to upload and post this
+#   data to process.php
+# - Send a subscription notice to the user so that they may receive SMS later at the end of
+#   the project ( this could be done in part 1C as well)
+#
+################################################
+?>
+
 <!DOCTYPE html>
 <html>
 <head>

@@ -1,4 +1,23 @@
 <?php
+################################################
+# Illinois Institute of Technology
+# ITMO 544 Cloud Computing - Mini Project 1 
+#
+# Student: Guillermo de la Puente
+#          https://github.com/gpuenteallott
+#
+# Script C -
+# will deploy the load balancer and register your two instances with the load
+# balancer. Also create a SimpleDB domain, an SQS queue, and SNS Topic – it can be the
+# same script or another PHP script run from the command line 1 time
+#
+# Usage:
+#        ./install.php name custom_config_file_path
+#        name is the identificator of SDB domain,QS queue and SNS topic
+#        custom_config_file_path is the path to the php file that returns information with the aws credentials
+#
+# Example: ./install.php itmo544 "/var/www/itmo544-CloudComputing-mp1/custom-config.php"
+################################################
 
 // Include the SDK using the Composer autoloader
 require 'vendor/autoload.php';
@@ -13,7 +32,7 @@ use Aws\Sns\SnsClient;
 use Aws\Sqs\sqsclient;
 use Aws\Sns\Exception\InvalidParameterException;
 
-$aws = Aws::factory('/var/www/itmo544-CloudComputing-mp1/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
+$aws = Aws::factory('vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
 
 $client = $aws->get('S3'); 
 
@@ -25,6 +44,7 @@ $sqsclient = $aws->get('Sqs');
 
 
 # Read the name file
+# Name is the resources identifier in AWS for this system
 $NAME = file_get_contents("name.txt");
 
 
