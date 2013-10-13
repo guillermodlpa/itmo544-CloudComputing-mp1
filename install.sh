@@ -69,4 +69,4 @@ sed -i "s/AWS_SECRET_KEY/$AWS_SECRET_KEY/g" /var/www/vendor/aws/aws-sdk-php/src/
 sed -i "s/########/\//g" /var/www/vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php
 
 # Save a file with the name in the webapp directory
-echo $NAME > /var/www/name.txt
+echo -n $NAME > /var/www/name.txt
