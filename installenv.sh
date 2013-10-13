@@ -109,12 +109,12 @@ printf "Load Balancer:  " &&  elb-create-lb $NAME_ELB --listener "lb-port=80,ins
 
 # Configure healthchek, otherwise it will fail automatically
 # Thresholds, interval and timeout set to default values
-printf "Load Balancer Health Check:  " &&  elb-configure-healthcheck $NAME_ELB --healthy-threshold 10 --interval 30 -t http:80/index.php --timeout 5 --unhealthy-threshold 2 --aws-credential-file aws_credentials_file
+printf "Load Balancer:  " &&  elb-configure-healthcheck $NAME_ELB --healthy-threshold 10 --interval 30 -t http:80/index.php --timeout 5 --unhealthy-threshold 2 --aws-credential-file aws_credentials_file
 
 i=1
 while read line
 do
-    echo "ELB: Step $i - Registered instances"
+    echo "Load Balancer: Step $i - Registered instances"
     elb-register-instances-with-lb $NAME_ELB --instances $line --aws-credential-file aws_credentials_file
     line=
     i=$(($i + 1))

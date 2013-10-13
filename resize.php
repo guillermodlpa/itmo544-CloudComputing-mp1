@@ -43,7 +43,7 @@ $mbody="";
 # Read the name file
 # Name is the resources identifier in AWS for this system
 $NAME = file_get_contents("name.txt");
-$NAME_SDB = str_replace("-", "_", $NAME);
+$NAME_SDB = str_replace("-", "", $NAME)."sdb";
 
 #####################################################
 # SQS Read the queue for some information -- we will consume the queue later

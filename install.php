@@ -34,7 +34,7 @@ $snsclient = $aws->get('Sns');
 $sqsclient = $aws->get('Sqs');
 
 $NAME=$argv[1];
-$NAME_SDB = str_replace("-", "_", $NAME);
+$NAME_SDB = str_replace("-", "", $NAME)."sdb";
 
 # Create SimpleDB domain
 # sdb must use _ instead of - because the query syntax doesn't allow dashes
