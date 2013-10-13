@@ -33,22 +33,25 @@ $sdbclient = $aws->get('SimpleDb');
 $snsclient = $aws->get('Sns'); 
 $sqsclient = $aws->get('Sqs');
 
+$NAME=$argv[1];
+$NAME_SDB = str_replace("-", "_", $NAME);
+
 # Create SimpleDB domain
 # sdb must use _ instead of - because the query syntax doesn't allow dashes
 $result = $sdbclient->createDomain(array(
-    'DomainName' => "$argv[1]_sdb",
+    'DomainName' => "$NAME_SDB",
 ));
-echo "SDB: domain $argv[1]_sdb created\n";
+echo "SDB: domain $NAME_SDB created\n";
 
 # Create SQS queue
 $result = $sqsclient->createQueue(array(
-	'QueueName' => "$argv[1]-sqs",
+	'QueueName' => "$NAME-sqs",
 	'Attributes' => array(),
 ));
-echo "SQS: queue $argv[1]-sqs created\n";
+echo "SQS: queue $NAME-sqs created\n";
 
 # Create SNS Client with a topic that matches the argument name
 $result = $snsclient->createTopic(array(
-    'Name' => "$argv[1]-sns",
+    'Name' => "$NAME-sns",
 ));
-echo "SNS: topic $argv[1]-sns created\n";
+echo "SNS: topic $NAME-sns created\n";

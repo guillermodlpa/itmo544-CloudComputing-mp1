@@ -43,6 +43,7 @@ $mbody="";
 # Read the name file
 # Name is the resources identifier in AWS for this system
 $NAME = file_get_contents("name.txt");
+$NAME_SDB = str_replace("-", "_", $NAME);
 
 #####################################################
 # SQS Read the queue for some information -- we will consume the queue later
@@ -76,7 +77,7 @@ foreach ($result->getPath('Messages/*/Body') as $messageBody) {
 ##############################################
 # Select from SimpleDB element where id = the id in the Queue
 ##############################################
-$exp = "select * from $NAME_sdb where id = '$mbody'";
+$exp = "select * from $NAME_SDB where id = '$mbody'";
 echo "\n".$exp."\n";
 
 try {

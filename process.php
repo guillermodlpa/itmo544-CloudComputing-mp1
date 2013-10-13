@@ -158,12 +158,12 @@ $url= $result['ObjectURL'];
 # The domain was already created in setup
 # Just in case, to avoid potential errors, create it
 $result = $sdbclient->createDomain(array(
-    'DomainName' => "$NAME-sdb", 
+    'DomainName' => "$NAME_SDB", 
 ));
 
 $result = $sdbclient->putAttributes(array(
 
-    'DomainName' => "$NAME-sdb",
+    'DomainName' => "$NAME_SDB",
     'ItemName' =>$itemName ,
     'Attributes' => array(
         array(
