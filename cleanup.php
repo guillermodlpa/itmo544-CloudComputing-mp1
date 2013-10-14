@@ -85,6 +85,11 @@ foreach ($result->getPath('Messages/*/Body') as $messageBody) {
     $mbody=$messageBody;
 }
 
+if ( is_null($mbody) ) {
+    echo "variable mbody is null. Reload after a few seconds";
+    exit("variable mbody is null. Reload after a few seconds");
+}
+
 ####################################################################
 # Select in the SimpleDB using the id retrieved from SQS
 ####################################################################
@@ -108,6 +113,7 @@ $finishedurl = '';
 $bucket = '';
 $id = '';
 $phone = '';
+$receiptHandle = '';
 $filename = '';
 $localfilename = ""; // this is a local variabel used to store the content of the s3 object
 
@@ -139,6 +145,10 @@ foreach ($iterator as $item) {
                 echo "Finished URL Value is: ". $attribute['Value']."\n";
                 $finishedurl = $attribute['Value'];
                 break;
+            case "receiptHandle":
+                echo "Receipt Handle is: ". $attribute['Value']."\n";
+                $receiptHandle = $attribute['Value'];
+                break;
            case "filename":
                 echo "Filename Value is: ". $attribute['Value']."\n";
                 $filename = $attribute['Value'];
@@ -153,6 +163,18 @@ foreach ($iterator as $item) {
         }
     }
 }
+
+################################################
+# SQS
+# Delete the message to make sure it won't be processed two times
+# The receipt handle is necessary to perform this
+################################################
+
+$result = $client->deleteMessage(array(
+    'QueueUrl' => "$NAME-sqs",
+    'ReceiptHandle' => $receiptHandle,
+));
+
 
 #############################################
 # Create SNS Simple Notification Service Topic for subscription
@@ -199,18 +221,5 @@ $result = $snsclient->publish(array(
     'MessageStructure' => 'sms',
 ));
 
-
-################################################
-# SQS
-# Delete the message to make sure it won't be processed two times
-################################################
-/*
-$result = $client->deleteMessage(array(
-    // QueueUrl is required
-    'QueueUrl' => "$NAME-sqs",
-    // ReceiptHandle is required
-    'ReceiptHandle' => 'string',
-));
-*/
 
 

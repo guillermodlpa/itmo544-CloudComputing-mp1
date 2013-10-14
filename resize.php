@@ -44,6 +44,8 @@ $NAME_SDB = str_replace("-", "", $NAME)."sdb";
 
 // sqs message body will contain the id
 $mbody="";
+// sqs receipt handle will contain an id necessary to remove the sqs message later
+$receiptHandle="";
 
 #####################################################
 # SQS Read the queue for some information -- we will consume the queue later
@@ -72,6 +74,11 @@ foreach ($result->getPath('Messages/*/Body') as $messageBody) {
     // Do something with the message
     echo "SQS: " . $messageBody . "\n";
     $mbody=$messageBody;
+}
+foreach ($result->getPath('Messages/*/ReceiptHandle') as $receiptHandle2) {
+    // Do something with the message
+    echo "SQS receipt Handle: " . $receiptHandle2 . "\n";
+    $receiptHandle=$receiptHandle2;
 }
 
 ##############################################
@@ -143,10 +150,9 @@ foreach ($iterator as $item) {
            #default: 
            #     echo "Unable to figure out - " . $attribute['Name'] ." = " . $attribute['Value'];
 
-        } // end of switch 
- #     } // end of if
-    } // end of inner for loop 
-}//end of outer for loop
+        }
+    }
+}
 
 ###########################################################################
 #  Now that you have the URI returned in the S3 object you can use wget -
@@ -213,7 +219,12 @@ $result = $sdbclient->putAttributes(array(
             'Name' => 'finishedurl',
             'Value' => $newUrl,
             'Replace' => true
-        )
+        ),
+        array(
+            'Name' => 'receiptHandle',
+            'Value' => $receiptHandle,
+            'Replace' => true
+        ),
     ),
 ));
 

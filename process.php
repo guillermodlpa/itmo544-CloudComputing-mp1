@@ -189,7 +189,11 @@ $result = $sdbclient->putAttributes(array(
          array(
             'Name' => 'finishedurl',
             'Value' => '',
-        ),     
+        ),  
+        array(
+            'Name' => 'receiptHandle',
+            'Value' => '',
+        ),      
          array(
             'Name' => 'filename',
             'Value' => basename($_FILES['uploaded_file']['name']),
