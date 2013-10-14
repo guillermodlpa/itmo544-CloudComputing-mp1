@@ -99,7 +99,7 @@ do
     i=$(($i + 1))
 done < instance_ids
 
-#Create aws credentials file
+# Create aws credentials file
 # ELB needs this file, the environment variables wont work :(
 echo AWSAccessKeyId=$2 > aws_credentials_file
 echo AWSSecretKey=$3 >> aws_credentials_file

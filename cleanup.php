@@ -51,25 +51,115 @@ $sqsclient = $aws->get('Sqs');
 $NAME = file_get_contents("name.txt");
 $NAME_SDB = str_replace("-", "", $NAME)."sdb";
 
-################################################
-# SQS
-# Delete the message to make sure it won't be processed two times
-################################################
-/*
-$result = $client->deleteMessage(array(
-    // QueueUrl is required
-    'QueueUrl' => "$NAME-sqs",
-    // ReceiptHandle is required
-    'ReceiptHandle' => 'string',
+// sqs message body will contain the id
+$mbody="";
+
+#####################################################
+# SQS 
+# Read the queue for some information -- we will consume the queue later
+# The SQS message will contain the id for the job to be cleaned up
+#####################################################
+
+# The URL must be obtained
+# Obtain the SQS url for the given name
+$sqs_queue_url = $sqsclient->getQueueUrl(array(
+    'QueueName' => "$NAME-sqs",
 ));
-*/
+var_export($sqs_queue_url->getkeys());
+$sqs_queue_url = $sqs_queue_url['QueueUrl'];
 
 
+$result = $sqsclient->receiveMessage(array(
+    // QueueUrl is required
+    'QueueUrl' => $sqs_queue_url,
+    'MaxNumberOfMessages' => 1, 
+));
+
+######################################
+# Probably need some logic in here to handle delays
+######################################
+
+foreach ($result->getPath('Messages/*/Body') as $messageBody) {
+    // Do something with the message
+    echo "SQS: " . $messageBody . "\n";
+    $mbody=$messageBody;
+}
+
+####################################################################
+# Select in the SimpleDB using the id retrieved from SQS
+####################################################################
+$exp = "select * from $NAME_SDB where id = '$mbody'";
+echo "\n".$exp."\n";
+
+try {
+$iterator = $sdbclient->getIterator('Select', array(
+    'SelectExpression' => $exp,
+));
+} catch(InvalidQueryExpression $i) {
+ echo 'Invalid query: '. $i->getMessage() . "\n";
+}
+
+####################################################################
+# Declare some variables as place holders for the select object
+####################################################################
+$email = '';
+$rawurl = '';
+$finishedurl = '';
+$bucket = '';
+$id = '';
+$phone = '';
+$filename = '';
+$localfilename = ""; // this is a local variabel used to store the content of the s3 object
+
+###################################################################
+# Now we are going to loop through the response object to get the 
+# values of the returned object
+##################################################################
+foreach ($iterator as $item) {
+    echo "Item: " . $item['Name'] . "\n";
+     foreach ($item['Attributes'] as $attribute) {
+        switch ($attribute['Name']) {
+            case "id": 
+                echo "id Value is: ". $attribute['Value']."\n";
+                $id = $attribute['Value'];
+                break;
+            case "email":
+                echo "Email Value is: ". $attribute['Value']."\n";
+                $email = $attribute['Value']; 
+                break;
+            case "bucket":
+                echo "Bucket Value is: ". $attribute['Value']."\n";
+                $bucket = $attribute['Value'];
+                break;
+           case "rawurl":
+                echo "RawURL Value is: ". $attribute['Value']."\n";
+                $rawurl = $attribute['Value'];
+                break;
+           case "finishedurl":
+                echo "Finished URL Value is: ". $attribute['Value']."\n";
+                $finishedurl = $attribute['Value'];
+                break;
+           case "filename":
+                echo "Filename Value is: ". $attribute['Value']."\n";
+                $filename = $attribute['Value'];
+                break;
+           case "phone":
+                echo "Phone Value is: ". $attribute['Value']."\n";
+                $phone = $attribute['Value'];
+                break;
+           default: 
+                echo "Unable to figure out - " . $attribute['Name'] ." = " . $attribute['Value'];
+
+        }
+    }
+}
 
 #############################################
 # Create SNS Simple Notification Service Topic for subscription
 ##############################################
-/*
+
+$topic = "$NAME-sns";
+
 $result = $snsclient->createTopic(array(
     // Name is required
     'Name' => $topic,
@@ -104,8 +194,23 @@ $result = $snsclient->publish(array(
     'TopicArn' => $topicArn,
     'TargetArn' => $topicArn,
     // Message is required
-    'Message' => 'Your image has been uploaded',
-    'Subject' => $url,
+    'Message' => "Your image has been processed. Download it from $finishedurl",
+    'Subject' => "Done! $NAME",
     'MessageStructure' => 'sms',
 ));
+
+
+################################################
+# SQS
+# Delete the message to make sure it won't be processed two times
+################################################
+/*
+$result = $client->deleteMessage(array(
+    // QueueUrl is required
+    'QueueUrl' => "$NAME-sqs",
+    // ReceiptHandle is required
+    'ReceiptHandle' => 'string',
+));
 */
+
+

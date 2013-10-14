@@ -37,13 +37,13 @@ $sdbclient = $aws->get('SimpleDb');
 
 $sqsclient = $aws->get('Sqs');
 
-// message body
-$mbody="";
-
 # Read the name file
 # Name is the resources identifier in AWS for this system
 $NAME = file_get_contents("name.txt");
 $NAME_SDB = str_replace("-", "", $NAME)."sdb";
+
+// sqs message body will contain the id
+$mbody="";
 
 #####################################################
 # SQS Read the queue for some information -- we will consume the queue later
@@ -87,6 +87,7 @@ $iterator = $sdbclient->getIterator('Select', array(
 } catch(InvalidQueryExpression $i) {
  echo 'Invalid query: '. $i->getMessage() . "\n";
 }
+
 ####################################################################
 # Declare some variables as place holders for the select object
 ####################################################################
