@@ -169,12 +169,12 @@ foreach ($iterator as $item) {
 # Delete the message to make sure it won't be processed two times
 # The receipt handle is necessary to perform this
 ################################################
-
+echo "Deleting handle.";
 $result = $client->deleteMessage(array(
     'QueueUrl' => "$NAME-sqs",
     'ReceiptHandle' => $receiptHandle,
 ));
-
+echo "Handle deleted?";
 
 #############################################
 # Create SNS Simple Notification Service Topic for subscription
