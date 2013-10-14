@@ -70,7 +70,6 @@ $sqs_queue_url = $sqs_queue_url['QueueUrl'];
 
 
 $result = $sqsclient->receiveMessage(array(
-    // QueueUrl is required
     'QueueUrl' => $sqs_queue_url,
     'MaxNumberOfMessages' => 1, 
 ));
@@ -171,7 +170,7 @@ foreach ($iterator as $item) {
 ################################################
 echo "Deleting handle.";
 $result = $client->deleteMessage(array(
-    'QueueUrl' => "$NAME-sqs",
+    'QueueUrl' => $sqs_queue_url,
     'ReceiptHandle' => $receiptHandle,
 ));
 echo "Handle deleted?";
