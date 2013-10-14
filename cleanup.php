@@ -194,8 +194,8 @@ $result = $snsclient->publish(array(
     'TopicArn' => $topicArn,
     'TargetArn' => $topicArn,
     // Message is required
-    'Message' => "Your image has been processed. Download it from $finishedurl",
-    'Subject' => "Done! $NAME",
+    'Message' => "Done! $NAME",
+    'Subject' => "Done! Your image has been processed. Download it from $finishedurl",
     'MessageStructure' => 'sms',
 ));
 
