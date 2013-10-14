@@ -178,39 +178,34 @@ echo "Handle deleted?";
 #############################################
 # Create SNS Simple Notification Service Topic for subscription
 ##############################################
-
+/*
 $topic = "$NAME-sns";
 
 $result = $snsclient->createTopic(array(
-    // Name is required
     'Name' => $topic,
 ));
 
 $topicArn = $result['TopicArn'];
 
 $result = $snsclient->setTopicAttributes(array(
-    // TopicArn is required
     'TopicArn' => $topicArn,
-    // AttributeName is required
     'AttributeName' => 'DisplayName',
     'AttributeValue' => "$NAME",
 ));
 
 try {
 $result = $snsclient->subscribe(array(
-
     'TopicArn' => $topicArn,
-
     'Protocol' => 'sms',
     'Endpoint' => $phone,
 )); } catch(InvalidParameterException $i) {
  echo 'Invalid parameter: '. $i->getMessage() . "\n";
 } 
-
+*/
 #####################################################
 # SNS publishing of message to topic - which will be sent via SMS
 #####################################################
-
+/*
 $result = $snsclient->publish(array(
     'TopicArn' => $topicArn,
     'TargetArn' => $topicArn,
@@ -218,7 +213,7 @@ $result = $snsclient->publish(array(
     'Message' => "Done! $NAME",
     'Subject' => "Done! Your image has been processed. Download it from $finishedurl",
     'MessageStructure' => 'sms',
-));
+));*/
 
 
 
