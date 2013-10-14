@@ -169,7 +169,7 @@ foreach ($iterator as $item) {
 # The receipt handle is necessary to perform this
 ################################################
 echo "Deleting handle.";
-$result = $client->deleteMessage(array(
+$result = $sqsclient->deleteMessage(array(
     'QueueUrl' => $sqs_queue_url,
     'ReceiptHandle' => $receiptHandle,
 ));
