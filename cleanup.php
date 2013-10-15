@@ -196,11 +196,16 @@ $result = $snsclient->setTopicAttributes(array(
 */
 
 $result = $snsclient->listTopics();
-echo $result;
-foreach ($result->getPath('Topics/*/TopicArn') as $topicArn) {
+$topicArn="";
 
+foreach ($result->getPath('Topics/*/TopicArn') as $topicArnTmp) {
 
+    if ( strstr($topicArnTmp,$topic) ) {
+        $topicArn=$topicArnTmp;
+    }
 }
+
+echo "TOPIC ARN=($topicArn)";
 
 try {
 $result = $snsclient->subscribe(array(
@@ -210,19 +215,20 @@ $result = $snsclient->subscribe(array(
 )); } catch(InvalidParameterException $i) {
  echo 'Invalid parameter: '. $i->getMessage() . "\n";
 } 
-*/
+
+echo " Suscribed . Sending ";
 #####################################################
 # SNS publishing of message to topic - which will be sent via SMS
 #####################################################
-/*
+try {
 $result = $snsclient->publish(array(
     'TopicArn' => $topicArn,
     'TargetArn' => $topicArn,
-    // Message is required
-    'Message' => "Done! $NAME",
-    'Subject' => "Done! Your image has been processed. Download it from $finishedurl",
+    'Message' => "Image uploaded",
+    'Subject' => "$finishedurl",
     'MessageStructure' => 'sms',
-));*/
+)); } catch(SqsException $i) {
+ echo '(gpa)Invalid parameter: '. $i->getMessage() . "\n";
+} 
 
-
-
+echo " Sent ";

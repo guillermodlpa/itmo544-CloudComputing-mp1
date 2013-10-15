@@ -57,6 +57,7 @@ $result = $snsclient->createTopic(array(
 echo "SNS: topic $NAME-sns created\n";
 
 # Set SNS topic attributes
+$topicArn = $result['TopicArn'];
 $result = $snsclient->setTopicAttributes(array(
     'TopicArn' => $topicArn,
     'AttributeName' => 'DisplayName',
