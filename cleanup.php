@@ -178,20 +178,29 @@ echo "Handle deleted?";
 #############################################
 # Create SNS Simple Notification Service Topic for subscription
 ##############################################
-/*
-$topic = "$NAME-sns";
 
+$topic = "$NAME-sns";
+/*
 $result = $snsclient->createTopic(array(
     'Name' => $topic,
 ));
 
 $topicArn = $result['TopicArn'];
-
+*/
+/*
 $result = $snsclient->setTopicAttributes(array(
     'TopicArn' => $topicArn,
     'AttributeName' => 'DisplayName',
     'AttributeValue' => "$NAME",
 ));
+*/
+
+$result = $snsclient->listTopics();
+echo $result;
+foreach ($result->getPath('Topics/*/TopicArn') as $topicArn) {
+
+
+}
 
 try {
 $result = $snsclient->subscribe(array(
