@@ -30,7 +30,7 @@ INSTANCE_TYPE=t1.micro
 REGION=us-east-1
 AVAIL_ZONES=us-east-1a,us-east-1b,us-east-1c,us-east-1d
 AMI=ami-ad83d7c4
-NUMBER_OF_INSTANCES=1
+NUMBER_OF_INSTANCES=2
 # http://cloud-images.ubuntu.com/locator/ec2/
 
 # Check number of arguments
@@ -105,7 +105,7 @@ echo AWSAccessKeyId=$2 > aws_credentials_file
 echo AWSSecretKey=$3 >> aws_credentials_file
 
 # Create Elastic Load Balancer
-printf "Load Balancer:  " &&  elb-create-lb $NAME_ELB --listener "lb-port=80,instance-port=8080,protocol=http" --region $REGION --aws-credential-file aws_credentials_file -z $AVAIL_ZONES
+printf "Load Balancer:  " &&  elb-create-lb $NAME_ELB --listener "lb-port=80,instance-port=80,protocol=http" --region $REGION --aws-credential-file aws_credentials_file -z $AVAIL_ZONES
 
 # Configure healthchek, otherwise it will fail automatically
 # Thresholds, interval and timeout set to default values
