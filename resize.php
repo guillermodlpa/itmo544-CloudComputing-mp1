@@ -265,6 +265,16 @@ function addStamp($image)
 <html>
 <head>
     <title>Resize PHP</title>
+    <style>
+        div{
+            width:33%;
+            float:left;
+        }
+        div img {
+            width: 90%;
+            margin: 0 5%;
+        }
+    </style>
 </head>
 <body>
     <h1>Picture Uploader</h1>
@@ -275,14 +285,19 @@ function addStamp($image)
     <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
 
     <h2>Resize</h2>
-    <p>Local image in server</p>
-    <img src="<? echo $localfilename ?>" />
 
-    <p>Remote image in S3</p>
-    <img src="<? echo $newUrl ?>" />
-
-    <p>Previous image in S3</p>
-    <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
+    <div>
+        <p>Local image in server</p>
+        <img src="<? echo $localfilename ?>" />
+    </div>
+    <div>
+        <p>Remote image in S3</p>
+        <img src="<? echo $newUrl ?>" />
+    </div>
+    <div>
+        <p>Previous image in S3</p>
+        <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
+    </div>  
 
      <p>Continue to next step --> <a href="cleanup.php">Clean Up</a></p>
 </body>

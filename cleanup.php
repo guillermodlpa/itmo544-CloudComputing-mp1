@@ -232,3 +232,26 @@ $result = $snsclient->publish(array(
 } 
 
 echo " Sent ";
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clean Up PHP</title>
+</head>
+<body>
+    <h1>Picture Uploader</h1>
+
+    <p>A mini project for ITMO 544 - Cloud Computing</p>
+    <p>Illinois Institute of Technology</p>
+    <p>Student: Guillermo de la Puente</p>
+    <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+
+    <h2>Clean Up</h2>
+    <p>Everything cleaned up</p>
+    <p>The processed file will be removed in 10 minutes from now</p>
+    <p>A text message was sent to <? echo $phone ?> with the URL of the processed image</p>
+
+    <p>Thanks!</p>
+</body>
+</html>
