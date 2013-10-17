@@ -31,7 +31,7 @@ use Aws\S3\S3Client;
 use Aws\Sns\SnsClient;
 use Aws\Sqs\sqsclient;
 use Aws\Sns\Exception\InvalidParameterException;
-print "started";
+
 $aws = Aws::factory('./vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
 
 $client = $aws->get('S3'); 
@@ -53,7 +53,7 @@ $UUID = uniqid();
 $email = str_replace("@","-",$_POST["email"]); 
 $bucket = str_replace("@","-",$_POST["email"]).time();
 $bucket = str_replace(" ","","$NAME-s3-$bucket"); 
-print "bucket name: $bucket\n";
+//print "bucket name: $bucket\n";
 $phone = $_POST["phone"];
 # Previous topic configuration
 #$topic = explode("-",$email );
@@ -72,15 +72,15 @@ $itemName = 'images-'.$UUID;
 $result = $client->createBucket(array(
     'Bucket' => $bucket
 ));
-print "bucket creating: $bucket\n";
+//print "bucket creating: $bucket\n";
 // Wait until the bucket is created
 $client->waitUntil('BucketExists', array('Bucket' => $bucket));
-print "bucket created: $bucket\n";
+//print "bucket created: $bucket\n";
 $uploaddir = '/tmp/';
 $uploadfile = $uploaddir . basename($_FILES['uploaded_file']['name']);
-echo $uploadfile. "\n";
+//echo $uploadfile. "\n";
 if (move_uploaded_file($_FILES['uploaded_file']['tmp_name'], $uploadfile)) {
-    echo "File is valid, and was successfully uploaded.\n";
+    //echo "File is valid, and was successfully uploaded.\n";
 } else {
     echo "Possible file upload attack!\n";
 }
@@ -100,8 +100,8 @@ $result = $client->putObject(array(
         'md5' =>  md5_file($pathToFile),
     )
 ));
-print "#############################\n";
-var_export($result->getkeys());
+//print "#############################\n";
+//var_export($result->getkeys());
 // this gets all the key value pairs and exports them as system variables making our lives nice so we don't have to do this manually. 
 
 # S3 URI for uploaded object
@@ -171,7 +171,7 @@ $result = $sdbclient->putAttributes(array(
 $sqs_queue_url = $sqsclient->getQueueUrl(array(
     'QueueName' => "$NAME-sqs",
 ));
-var_export($sqs_queue_url->getkeys());
+//var_export($sqs_queue_url->getkeys());
 $sqs_queue_url = $sqs_queue_url['QueueUrl'];
 
 # Send the message

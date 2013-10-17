@@ -65,7 +65,7 @@ $mbody="";
 $sqs_queue_url = $sqsclient->getQueueUrl(array(
     'QueueName' => "$NAME-sqs",
 ));
-var_export($sqs_queue_url->getkeys());
+//var_export($sqs_queue_url->getkeys());
 $sqs_queue_url = $sqs_queue_url['QueueUrl'];
 
 
@@ -87,6 +87,7 @@ foreach ($result->getPath('Messages/*/Body') as $messageBody) {
 
 if ( $mbody === "" ) {
     echo "The value in SQS is not readable yet. Wait a few seconds and reload the page.";
+    exit;
 }
 
 
@@ -94,14 +95,14 @@ if ( $mbody === "" ) {
 # Select in the SimpleDB using the id retrieved from SQS
 ####################################################################
 $exp = "select * from $NAME_SDB where id = '$mbody'";
-echo "\n".$exp."\n";
+//echo "\n".$exp."\n";
 
 try {
 $iterator = $sdbclient->getIterator('Select', array(
     'SelectExpression' => $exp,
 ));
 } catch(InvalidQueryExpression $i) {
- echo 'Invalid query: '. $i->getMessage() . "\n";
+ //echo 'Invalid query: '. $i->getMessage() . "\n";
 }
 
 ####################################################################
@@ -122,43 +123,43 @@ $localfilename = ""; // this is a local variabel used to store the content of th
 # values of the returned object
 ##################################################################
 foreach ($iterator as $item) {
-    echo "Item: " . $item['Name'] . "\n";
+    //echo "Item: " . $item['Name'] . "\n";
      foreach ($item['Attributes'] as $attribute) {
         switch ($attribute['Name']) {
             case "id": 
-                echo "id Value is: ". $attribute['Value']."\n";
+                //echo "id Value is: ". $attribute['Value']."\n";
                 $id = $attribute['Value'];
                 break;
             case "email":
-                echo "Email Value is: ". $attribute['Value']."\n";
+                //echo "Email Value is: ". $attribute['Value']."\n";
                 $email = $attribute['Value']; 
                 break;
             case "bucket":
-                echo "Bucket Value is: ". $attribute['Value']."\n";
+                //echo "Bucket Value is: ". $attribute['Value']."\n";
                 $bucket = $attribute['Value'];
                 break;
            case "rawurl":
-                echo "RawURL Value is: ". $attribute['Value']."\n";
+                //echo "RawURL Value is: ". $attribute['Value']."\n";
                 $rawurl = $attribute['Value'];
                 break;
            case "finishedurl":
-                echo "Finished URL Value is: ". $attribute['Value']."\n";
+                //echo "Finished URL Value is: ". $attribute['Value']."\n";
                 $finishedurl = $attribute['Value'];
                 break;
             case "receiptHandle":
-                echo "Receipt Handle is: ". $attribute['Value']."\n";
+                //echo "Receipt Handle is: ". $attribute['Value']."\n";
                 $receiptHandle = $attribute['Value'];
                 break;
            case "filename":
-                echo "Filename Value is: ". $attribute['Value']."\n";
+                //echo "Filename Value is: ". $attribute['Value']."\n";
                 $filename = $attribute['Value'];
                 break;
            case "phone":
-                echo "Phone Value is: ". $attribute['Value']."\n";
+                //echo "Phone Value is: ". $attribute['Value']."\n";
                 $phone = $attribute['Value'];
                 break;
-           default: 
-                echo "Unable to figure out - " . $attribute['Name'] ." = " . $attribute['Value'];
+          // default: 
+                //echo "Unable to figure out - " . $attribute['Name'] ." = " . $attribute['Value'];
 
         }
     }
@@ -169,12 +170,12 @@ foreach ($iterator as $item) {
 # Delete the message to make sure it won't be processed two times
 # The receipt handle is necessary to perform this
 ################################################
-echo "Deleting handle.";
+//echo "Deleting handle.";
 $result = $sqsclient->deleteMessage(array(
     'QueueUrl' => $sqs_queue_url,
     'ReceiptHandle' => $receiptHandle,
 ));
-echo "Handle deleted?";
+//echo "Handle deleted?";
 
 #############################################
 # Create SNS Simple Notification Service Topic for subscription
@@ -206,7 +207,7 @@ foreach ($result->getPath('Topics/*/TopicArn') as $topicArnTmp) {
     }
 }
 
-echo "TOPIC ARN=($topicArn)";
+//echo "TOPIC ARN=($topicArn)";
 
 try {
 $result = $snsclient->subscribe(array(
@@ -214,10 +215,10 @@ $result = $snsclient->subscribe(array(
     'Protocol' => 'sms',
     'Endpoint' => $phone,
 )); } catch(InvalidParameterException $i) {
- echo 'Invalid parameter: '. $i->getMessage() . "\n";
+ //echo 'Invalid parameter: '. $i->getMessage() . "\n";
 } 
 
-echo " Suscribed . Sending ";
+//echo " Suscribed . Sending ";
 #####################################################
 # SNS publishing of message to topic - which will be sent via SMS
 #####################################################
@@ -229,10 +230,10 @@ $result = $snsclient->publish(array(
     'Subject' => "$finishedurl",
     'MessageStructure' => 'sms',
 )); } catch(SqsException $i) {
- echo '(gpa)Invalid parameter: '. $i->getMessage() . "\n";
+ //echo '(gpa)Invalid parameter: '. $i->getMessage() . "\n";
 } 
 
-echo " Sent ";
+//echo " Sent ";
 
 ?>
 <!DOCTYPE html>

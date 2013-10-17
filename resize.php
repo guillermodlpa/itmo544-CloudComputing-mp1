@@ -83,20 +83,21 @@ foreach ($result->getPath('Messages/*/ReceiptHandle') as $receiptHandle2) {
 
 if ( $mbody === "" ) {
     echo "The value in SQS is not readable yet. Wait a few seconds and reload the page.";
+    exit;
 }
 
 ##############################################
 # Select from SimpleDB element where id = the id in the Queue
 ##############################################
 $exp = "select * from $NAME_SDB where id = '$mbody'";
-echo "\n".$exp."\n";
+//echo "\n".$exp."\n";
 
 try {
 $iterator = $sdbclient->getIterator('Select', array(
     'SelectExpression' => $exp,
 ));
 } catch(InvalidQueryExpression $i) {
- echo 'Invalid query: '. $i->getMessage() . "\n";
+ //echo 'Invalid query: '. $i->getMessage() . "\n";
 }
 
 ####################################################################
@@ -115,26 +116,26 @@ $localfilename = ""; // this is a local variabel used to store the content of th
 # values of the returned object
 ##################################################################
 foreach ($iterator as $item) {
-    echo "Item: " . $item['Name'] . "\n";
+    //echo "Item: " . $item['Name'] . "\n";
  #var_export($item['Attributes']);
      foreach ($item['Attributes'] as $attribute) {
             #if ($attribute['Name'] == 'email') {
     	#  echo "Email Value: " . $attribute['Value'] . "\n";
         switch ($attribute['Name']) {
             case "id": 
-                echo "id Value is: ". $attribute['Value']."\n";
+                //echo "id Value is: ". $attribute['Value']."\n";
                 $id = $attribute['Value'];
                 break;
             case "email":
-                echo "Email Value is: ". $attribute['Value']."\n";
+                //echo "Email Value is: ". $attribute['Value']."\n";
                 $email = $attribute['Value']; 
                 break;
             case "bucket":
-                echo "Bucket Value is: ". $attribute['Value']."\n";
+                //echo "Bucket Value is: ". $attribute['Value']."\n";
                 $bucket = $attribute['Value'];
                 break;
            case "rawurl":
-                echo "RawURL Value is: ". $attribute['Value']."\n";
+                //echo "RawURL Value is: ". $attribute['Value']."\n";
                 $rawurl = $attribute['Value'];
                 break;
            # This case is wrong
@@ -144,11 +145,11 @@ foreach ($iterator as $item) {
            #     $finishedurl = $attribute['Value'];
            #     break;
            case "filename":
-                echo "Filename Value is: ". $attribute['Value']."\n";
+                //echo "Filename Value is: ". $attribute['Value']."\n";
                 $filename = $attribute['Value'];
                 break;
            case "phone":
-                echo "Phone Value is: ". $attribute['Value']."\n";
+                //echo "Phone Value is: ". $attribute['Value']."\n";
                 $phone = $attribute['Value'];
                 break;
            #default: 
@@ -167,13 +168,13 @@ foreach ($iterator as $item) {
 ############################################################################
 $s3urlprefix = 'https://s3.amazonaws.com/';
 $localfilename = "./tmp/$filename";
-echo "Getting object $filename from bucket $bucket . Saving at $localfilename";
+//echo "Getting object $filename from bucket $bucket . Saving at $localfilename";
 $result = $client->getObject(array(
     'Bucket' => $bucket,
     'Key'    => $filename,
     'SaveAs' => $localfilename,
 ));
-echo "Done";
+//echo "Done";
 ############################################################################
 #  Now that we have called the s3 object and downloaded (getObject) the file
 # to our local system - lets pass the file to our watermark library 
@@ -283,6 +284,9 @@ function addStamp($image)
             text-align: center;
             margin: 30px 0;
         }
+        .link {
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -296,15 +300,18 @@ function addStamp($image)
     <h2>Resize</h2>
 
     <div>
-        <p>Local image in server</p>
+        <h3>Local image in server</h3>
+        <p class="link"><? echo $localfilename ?></p>
         <img src="<? echo $localfilename ?>" />
     </div>
     <div>
         <p>Remote image in S3</p>
+        <p class="link"><? echo $newUrl ?></p>
         <img src="<? echo $newUrl ?>" />
     </div>
     <div>
         <p>Previous image in S3</p>
+        <p class="link"><? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?></p>
         <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
     </div>  
 
