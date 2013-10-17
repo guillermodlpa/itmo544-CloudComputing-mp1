@@ -81,6 +81,13 @@ foreach ($result->getPath('Messages/*/ReceiptHandle') as $receiptHandle2) {
     $receiptHandle=$receiptHandle2;
 }
 
+if ( is_null($mbody) ){
+    echo "[mbody is null]";
+}
+if ( $mbody === "" ) {
+    echo "[mbody is empty]";
+}
+
 ##############################################
 # Select from SimpleDB element where id = the id in the Queue
 ##############################################

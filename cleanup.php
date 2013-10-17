@@ -84,9 +84,12 @@ foreach ($result->getPath('Messages/*/Body') as $messageBody) {
     $mbody=$messageBody;
 }
 
-if ( is_null($mbody) ) {
-    echo "variable mbody is null. Reload after a few seconds";
-    exit("variable mbody is null. Reload after a few seconds");
+
+if ( is_null($mbody) ){
+    echo "[mbody is null]";
+}
+if ( $mbody === "" ) {
+    echo "[mbody is empty]";
 }
 
 ####################################################################
