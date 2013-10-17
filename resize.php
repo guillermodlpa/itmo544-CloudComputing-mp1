@@ -56,7 +56,7 @@ $receiptHandle="";
 $sqs_queue_url = $sqsclient->getQueueUrl(array(
     'QueueName' => "$NAME-sqs",
 ));
-var_export($sqs_queue_url->getkeys());
+//var_export($sqs_queue_url->getkeys());
 $sqs_queue_url = $sqs_queue_url['QueueUrl'];
 
 
@@ -72,20 +72,17 @@ $result = $sqsclient->receiveMessage(array(
 
 foreach ($result->getPath('Messages/*/Body') as $messageBody) {
     // Do something with the message
-    echo "SQS: " . $messageBody . "\n";
+    //echo "SQS: " . $messageBody . "\n";
     $mbody=$messageBody;
 }
 foreach ($result->getPath('Messages/*/ReceiptHandle') as $receiptHandle2) {
     // Do something with the message
-    echo "SQS receipt Handle: " . $receiptHandle2 . "\n";
+   // echo "SQS receipt Handle: " . $receiptHandle2 . "\n";
     $receiptHandle=$receiptHandle2;
 }
 
-if ( is_null($mbody) ){
-    echo "[mbody is null]";
-}
 if ( $mbody === "" ) {
-    echo "[mbody is empty]";
+    echo "The value in SQS is not readable yet. Wait a few seconds and reload the page.";
 }
 
 ##############################################
@@ -281,6 +278,11 @@ function addStamp($image)
             width: 90%;
             margin: 0 5%;
         }
+        .next {
+            font-size:170%;
+            text-align: center;
+            margin: 30px 0;
+        }
     </style>
 </head>
 <body>
@@ -306,6 +308,6 @@ function addStamp($image)
         <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
     </div>  
 
-     <p>Continue to next step --> <a href="cleanup.php">Clean Up</a></p>
+     <p class="next">Continue to next step --> <a href="cleanup.php">Clean Up</a></p>
 </body>
 </html>

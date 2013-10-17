@@ -61,44 +61,6 @@ $topic = "$NAME-sns";
 $itemName = 'images-'.$UUID;
 
 
-#echo $topic[0]."\n";
-#############################################
-# Create SNS Simple Notification Service Topic for subscription
-##############################################
-/*
-$result = $snsclient->createTopic(array(
-    // Name is required
-    'Name' => $topic,
-));
-
-$topicArn = $result['TopicArn'];
-
-echo $topicArn ."\n";
-echo $phone ."\n";
-
-$result = $snsclient->setTopicAttributes(array(
-    // TopicArn is required
-    'TopicArn' => $topicArn,
-    // AttributeName is required
-    'AttributeName' => 'DisplayName',
-    'AttributeValue' => "$NAME",
-));
-
-try {
-$result = $snsclient->subscribe(array(
-
-    'TopicArn' => $topicArn,
-
-    'Protocol' => 'sms',
-    'Endpoint' => $phone,
-)); } catch(InvalidParameterException $i) {
- echo 'Invalid parameter: '. $i->getMessage() . "\n";
-} 
-
-# see send for actual sending of text message
-
-*/
-
 
 ###############################################################
 # S3
@@ -144,8 +106,6 @@ var_export($result->getkeys());
 
 # S3 URI for uploaded object
 $url= $result['ObjectURL'];
-
-
 
 
 ####################################################
@@ -203,20 +163,6 @@ $result = $sdbclient->putAttributes(array(
 
 
 #####################################################
-# SNS publishing of message to topic - which will be sent via SMS
-#####################################################
-/*
-$result = $snsclient->publish(array(
-    'TopicArn' => $topicArn,
-    'TargetArn' => $topicArn,
-    // Message is required
-    'Message' => 'Your image has been uploaded',
-    'Subject' => $url,
-    'MessageStructure' => 'sms',
-));
-*/
-
-#####################################################
 # SQS
 # place a queue with the id as the sqs body
 #####################################################
@@ -242,6 +188,13 @@ $result = $sqsclient->sendMessage(array(
 <html>
 <head>
     <title>Process</title>
+    <style>
+        .next {
+            font-size:170%;
+            text-align: center;
+            margin: 30px 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -258,6 +211,6 @@ $result = $sqsclient->sendMessage(array(
     <p>Thank you</p>
     <p>S3 bucket: <? echo $bucket ?></p>
 
-    <p>Continue to next step --> <a href="resize.php">Resize</a></p>
+    <p class="next">Continue to next step --> <a href="resize.php">Resize</a></p>
 </body>
 </html>

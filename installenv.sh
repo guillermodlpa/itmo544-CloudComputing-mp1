@@ -30,7 +30,7 @@ INSTANCE_TYPE=t1.micro
 REGION=us-east-1
 AVAIL_ZONES=us-east-1a,us-east-1b,us-east-1c,us-east-1d
 AMI=ami-ad83d7c4
-NUMBER_OF_INSTANCES=2
+NUMBER_OF_INSTANCES=1
 # http://cloud-images.ubuntu.com/locator/ec2/
 
 # Check number of arguments
@@ -87,7 +87,7 @@ sed -i "s/NAME=/NAME=$NAME/g" $SCRIPT_FILE.tmp
 # Launch instances
 # using the selected keypair and security group
 # Save the ID of the new instances
-ec2-run-instances --region $REGION $AMI -n $NUMBER_OF_INSTANCES -t $INSTANCE_TYPE -f $SCRIPT_FILE.tmp -k $NAME -g $NAME_GRP | awk '{print $2}' | grep -E -o i-[0-9a-zA-Z]* > instance_ids
+ec2-run-instances --region $REGION $AMI -n $NUMBER_OF_INSTANCES -t $INSTANCE_TYPE -f $SCRIPT_FILE.tmp -k $NAME -g $NAME_GRP | awk '{print $2}' | grep -E -o i-[0-9a-zA-Z]* > instance_ids.txt
 echo "EC2: $NUMBER_OF_INSTANCES instances started"
 
 # Change name to the instances
@@ -97,7 +97,7 @@ do
     printf "EC2: " && ec2tag $line --tag Name=$NAME-$i
     line=
     i=$(($i + 1))
-done < instance_ids
+done < instance_ids.txt
 
 # Create aws credentials file
 # ELB needs this file, the environment variables wont work :(
@@ -118,11 +118,11 @@ do
     elb-register-instances-with-lb $NAME_ELB --instances $line --aws-credential-file aws_credentials_file
     line=
     i=$(($i + 1))
-done < instance_ids
+done < instance_ids.txt
 
 # Remove aws credentials file
 rm aws_credentials_file
-rm instance_ids
+rm instance_ids.txt
 rm $SCRIPT_FILE.tmp
 
 echo "Load Balancer: setup completed. It might take a few minutes to the system to be ready"

@@ -34,7 +34,7 @@ use Aws\S3\S3Client;
 use Aws\Sns\SnsClient;
 use Aws\Sqs\sqsclient;
 use Aws\Sns\Exception\InvalidParameterException;
-print "started";
+
 $aws = Aws::factory('./vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
 
 $client = $aws->get('S3'); 
@@ -80,17 +80,15 @@ $result = $sqsclient->receiveMessage(array(
 
 foreach ($result->getPath('Messages/*/Body') as $messageBody) {
     // Do something with the message
-    echo "SQS: " . $messageBody . "\n";
+    //echo "SQS: " . $messageBody . "\n";
     $mbody=$messageBody;
 }
 
 
-if ( is_null($mbody) ){
-    echo "[mbody is null]";
-}
 if ( $mbody === "" ) {
-    echo "[mbody is empty]";
+    echo "The value in SQS is not readable yet. Wait a few seconds and reload the page.";
 }
+
 
 ####################################################################
 # Select in the SimpleDB using the id retrieved from SQS
