@@ -18,9 +18,28 @@
 #
 # Usage:
 #        ./installenv.sh name name AWS_ACCESS_KEY AWS_SECRET KEY
-#        name is the identificator of instances, keypair and security group
+#        name is the identifier of instances, keypair, security group, SDB domain, SQS queue and SNS topic
 #
 # Example: ./installenv.sh itmo544 key secret
+#
+# Process:
+#    1 - Setup variables and exports
+#    2 - Create keypair if it doesn't exist already
+#    3 - Create a security group if it doesn't exist already
+#           ports opened: 80, 8080, 22. All IP adresses
+#    4 - Modify the install script on the fly to include AWS credentials for the new instances
+#    5 - Launch the instances (2) passing them the modified script
+#    6 - Name the instances
+#    7 - Generate a credentials file using the format required by the ELB api
+#    8 - Create the load balancer
+#    9 - Register the instances
+#   10 - Delete the ELB credentials file and other temporary files
+#   11 - Generate a credentials file using the format required by the PHP api
+#   12 - Launch the install.php script
+#        12.1 - Create SDB domain
+#        12.2 - Create SQS queue
+#        12.3 - Create SNS topic and set its attributes
+#
 ################################################ 
 
 EC2_API_TOOLS=~/ec2-api-tools-1.6.10.1
@@ -37,7 +56,7 @@ NUMBER_OF_INSTANCES=1
 if [ $# != 3 ]; then
 	echo 'Usage:'
 	echo '        name ./installenv.sh AWS_ACCESS_KEY AWS_SECRET KEY'
-	echo 'name is the identificator of instances, keypair and security group'
+	echo '        name is the identificator of instances, keypair and security group'
 	exit 1
 fi
 

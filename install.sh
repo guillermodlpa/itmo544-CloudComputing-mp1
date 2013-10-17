@@ -29,17 +29,6 @@ NAME=
 sudo apt-get -y update 
 sudo apt-get -y install git apache2 php5 php5-curl php5-cli curl unzip php5-gd
 
-# NOT NEEDED
-# To allow the load balancer to listen in port 80, we must allow apache to work in other port as well
-# We will use port 8080
-#sed -i 's/Listen 80/Listen 80\nListen 8080/g' /etc/apache2/ports.conf
-
-#cp /etc/apache2/sites-enabled/000-default 000-default.tmp
-#sed -i 's/*:80/*:8080/g' 000-default.tmp
-#echo "" >> /etc/apache2/sites-enabled/000-default
-#cat 000-default.tmp >> /etc/apache2/sites-enabled/000-default
-#rm 000-default.tmp
-
 # Restart Tomcat to apply port changes and recognize curl
 sudo service apache2 restart
 

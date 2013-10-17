@@ -6,17 +6,18 @@
 # Student: Guillermo de la Puente
 #          https://github.com/gpuenteallott
 #
-# Script C -
-# will deploy the load balancer and register your two instances with the load
-# balancer. Also create a SimpleDB domain, an SQS queue, and SNS Topic – it can be the
-# same script or another PHP script run from the command line 1 time
+# process.php
+# - add uploaded photo to S3 bucket - set metadata tags for a md5 hash and an epoch timestamp
+# - return S3 URI for uploaded object
+# - create Item in SimpleDB that contains:
+#      rawurl, email, bucketname, filename, phone, id, finishedurl
+# - Use SQS to place a queue with the id as the sqs body
+# - use the system sendmail to send an email (really easy) thanking them for submitting the altered image
 #
-# Usage:
-#        ./install.php name custom_config_file_path
-#        name is the identificator of SDB domain,QS queue and SNS topic
-#        custom_config_file_path is the path to the php file that returns information with the aws credentials
+# Changes respect assignment details:
+# - The SDB item contains also the ReceiptHandle for the SQS message. This parameter is necessary to remove
+#    the SQS message later
 #
-# Example: ./install.php itmo544 "/var/www/itmo544-CloudComputing-mp1/custom-config.php"
 ################################################
 
 // Include the SDK using the Composer autoloader
@@ -150,6 +151,8 @@ $result = $sdbclient->putAttributes(array(
             'Name' => 'finishedurl',
             'Value' => '',
         ),  
+         # We put the receiptHandle of the SQS message
+         # so we can remove it later in cleanup.php
         array(
             'Name' => 'receiptHandle',
             'Value' => '',
@@ -176,7 +179,6 @@ $sqs_queue_url = $sqs_queue_url['QueueUrl'];
 
 # Send the message
 $result = $sqsclient->sendMessage(array(
-
     'QueueUrl' => $sqs_queue_url,
     'MessageBody' => $UUID,
     'DelaySeconds' => 15,
@@ -189,6 +191,9 @@ $result = $sqsclient->sendMessage(array(
 <head>
     <title>Process</title>
     <style>
+        body{
+            font-family: "Arial", sans-serif;
+        }
         .next {
             font-size:170%;
             text-align: center;

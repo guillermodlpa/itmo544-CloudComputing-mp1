@@ -166,6 +166,29 @@ foreach ($iterator as $item) {
 }
 
 ################################################
+# S3
+# Mark object for expiration in 10 minutes
+################################################
+
+ $client->copy_object( 
+     array( //Source
+        'bucket' => $bucket,
+        'filename' => $filename
+     ),
+     array( //Target
+          'bucket' => $bucket,
+          'filename' => $filename,
+     ), 
+     array( //Options
+          'acl' => AmazonS3::ACL_PUBLIC,
+          'headers' => array(
+              "Expires" => gmdate("D, d M Y H:i:s T", 
+                                  strtotime("+10 minutes"))
+     ),
+     'metadataDirective' => 'REPLACE',
+ );
+
+################################################
 # SQS
 # Delete the message to make sure it won't be processed two times
 # The receipt handle is necessary to perform this
@@ -182,20 +205,6 @@ $result = $sqsclient->deleteMessage(array(
 ##############################################
 
 $topic = "$NAME-sns";
-/*
-$result = $snsclient->createTopic(array(
-    'Name' => $topic,
-));
-
-$topicArn = $result['TopicArn'];
-*/
-/*
-$result = $snsclient->setTopicAttributes(array(
-    'TopicArn' => $topicArn,
-    'AttributeName' => 'DisplayName',
-    'AttributeValue' => "$NAME",
-));
-*/
 
 $result = $snsclient->listTopics();
 $topicArn="";
@@ -240,6 +249,11 @@ $result = $snsclient->publish(array(
 <html>
 <head>
     <title>Clean Up PHP</title>
+    <style>
+        body{
+            font-family: "Arial", sans-serif;
+        }
+    </style>
 </head>
 <body>
     <h1>Picture Uploader</h1>

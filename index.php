@@ -19,6 +19,11 @@
 <html>
 <head>
 	<title>ITMO 544 - Index.php</title>
+	<style>
+		body{
+			font-family: "Arial", sans-serif;
+		}
+	</style>
 </head>
 <body>
 

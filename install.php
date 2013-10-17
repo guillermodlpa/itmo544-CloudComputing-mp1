@@ -6,15 +6,21 @@
 # Student: Guillermo de la Puente
 #          https://github.com/gpuenteallott
 #
-# process.php
-# - add uploaded photo to S3 bucket - set metadata tags for a md5 hash and an epoch
-#   timestamp
-# - return S3 URI for uploaded object
-# - create Item in SimpleDB that contains:
-#     rawurl, email, bucketname, filename, phone, id (using uniqid), finishedurl
-# - Use SQS to place a queue with the id as the sqs body
-# - use the system sendmail to send an email (really easy) thanking them for submitting the
-#   altered image
+# install.php
+# Is executed after deploying all the environment
+# 
+# Tasks performed:
+#      1 - Create SDB domain
+#      2 - Create SQS queue
+#      3 - Create SNS topic and set its attributes
+#
+# Usage:
+#        php install.php name credentials_file
+#        name is the identifier for SDB domain, SQS queue and SNS topic
+#        credentials_file is the path to the credentials file using PHP api convention
+#
+# Example: ./install.php itmo544 "/var/www/itmo544-CloudComputing-mp1/custom-config.php"
+#
 ################################################
 
 require 'vendor/autoload.php';

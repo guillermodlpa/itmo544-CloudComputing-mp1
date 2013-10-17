@@ -14,7 +14,7 @@
 # - Pass the downloaded object to the php gd library and add a water mark - image provided
 # - Upload the newly rendered image back to the S3 bucket the original came from
 # - Update the SimpleDB object giving the URI of the S3 object to the 'finishedurl' Attribute Value
-# Pair in Simple DB
+#   Pair in Simple DB
 ################################################
 
 // Include the SDK using the Composer autoloader
@@ -205,7 +205,7 @@ $client->waitUntilObjectExists(array(
     'Key'    => $newFilename
 ));
 
-var_export($result->getkeys());
+//var_export($result->getkeys());
 $newUrl= $result['ObjectURL'];
 
 ############################################################################
@@ -271,6 +271,9 @@ function addStamp($image)
 <head>
     <title>Resize PHP</title>
     <style>
+        body{
+            font-family: "Arial", sans-serif;
+        }
         div{
             width:33%;
             float:left;
