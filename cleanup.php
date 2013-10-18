@@ -171,23 +171,24 @@ foreach ($iterator as $item) {
 ################################################
 
  $client->copy_object( 
-     array( //Source
+    array( //Source
         'bucket' => $bucket,
         'filename' => $filename
-     ),
-     array( //Target
-          'bucket' => $bucket,
-          'filename' => $filename,
-     ), 
-     array( //Options
-          'acl' => AmazonS3::ACL_PUBLIC,
-          'metadataDirective' => 'REPLACE',
-          'headers' => array(
-              "Expires" => gmdate("D, d M Y H:i:s T", 
-                                  strtotime("+10 minutes")),
-          ),
-     ),
- );
+    ),
+    array( //Target
+        'bucket' => $bucket,
+        'filename' => $filename,
+    ), 
+    array( //Options
+        'acl' => AmazonS3::ACL_PUBLIC,
+        'metadataDirective' => 'REPLACE',
+        'headers' => array(
+            "Cache-Control" => "max-age=94608000",
+            "Expires" => gmdate("D, d M Y H:i:s T", 
+                                strtotime("+10 minutes"))
+        )
+    )
+);
 
 ################################################
 # SQS
