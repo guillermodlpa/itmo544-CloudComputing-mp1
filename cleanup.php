@@ -170,7 +170,7 @@ foreach ($iterator as $item) {
 # Mark object for expiration in 10 minutes
 ################################################
 
- $client->copy_object( 
+ $client->copyObject( 
     array( //Source
         'bucket' => $bucket,
         'filename' => $filename
@@ -180,12 +180,12 @@ foreach ($iterator as $item) {
         'filename' => $filename,
     ), 
     array( //Options
-        'acl' => AmazonS3::ACL_PUBLIC,
+        'acl' => 'public-read',
         'metadataDirective' => 'REPLACE',
         'headers' => array(
             "Cache-Control" => "max-age=94608000",
             "Expires" => gmdate("D, d M Y H:i:s T", 
-                                strtotime("+10 minutes"))
+                    strtotime("+10 minutes"))
         )
     )
 );
