@@ -181,11 +181,12 @@ foreach ($iterator as $item) {
      ), 
      array( //Options
           'acl' => AmazonS3::ACL_PUBLIC,
+          'metadataDirective' => 'REPLACE',
           'headers' => array(
               "Expires" => gmdate("D, d M Y H:i:s T", 
                                   strtotime("+10 minutes"))
+          ),
      ),
-     'metadataDirective' => 'REPLACE',
  );
 
 ################################################
