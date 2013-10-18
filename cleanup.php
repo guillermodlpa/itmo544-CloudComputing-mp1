@@ -184,7 +184,7 @@ foreach ($iterator as $item) {
           'metadataDirective' => 'REPLACE',
           'headers' => array(
               "Expires" => gmdate("D, d M Y H:i:s T", 
-                                  strtotime("+10 minutes"))
+                                  strtotime("+10 minutes")),
           ),
      ),
  );
