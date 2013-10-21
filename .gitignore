@@ -3,6 +3,7 @@ README.md~
 *.lock
 *.phar
 vendor
+application/vendor
 *.priv
 custom-config.php
 *.txt
