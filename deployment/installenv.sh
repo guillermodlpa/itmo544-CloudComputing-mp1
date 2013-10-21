@@ -146,6 +146,15 @@ rm $SCRIPT_FILE.tmp
 
 echo "Load Balancer: setup completed. It might take a few minutes to the system to be ready"
 
+# If vendor directory doesn't exist here, we must install AWS to execute the PHP install script
+if [ ! -d "vendor" ]
+then
+	echo "Composer: installing AWS for PHP to execute install script"
+	curl -sS https://getcomposer.org/installer | php > /dev/null
+	php composer.phar install > /dev/null
+	echo "Composer: installed"
+fi
+
 # Setup aws credentials file for PHP script
 # The string "########" is used to avoid problems with slashes while using 'sed'
 cp -f custom-config-template.php custom-config.php
