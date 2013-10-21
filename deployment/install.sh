@@ -40,10 +40,10 @@ curl -sS https://getcomposer.org/installer | php
 sudo wget https://github.com/gpuenteallott/itmo544-CloudComputing-mp1/archive/master.zip
 sudo unzip master.zip
 shopt -s dotglob # include hidden files in mv operation
-sudo mv itmo544-CloudComputing-mp1-master/* /var/www
+sudo mv itmo544-CloudComputing-mp1-master/application/* /var/www
 shopt -u dotglob # restore default behaviour
 sudo rm master.zip
-sudo rmdir itmo544-CloudComputing-mp1-master
+sudo rm -R itmo544-CloudComputing-mp1-master
 sudo rm index.html # remove default apache2 welcome
 
 # Install libraries
