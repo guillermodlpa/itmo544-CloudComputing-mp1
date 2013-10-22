@@ -182,12 +182,18 @@ foreach ($iterator as $item) {
     )
  );*/
 
+$expiry = "" . gmdate('r',strtotime('+10 minutes')) . "";
 $client->putBucketLifecycle(
     array(
         'Bucket' => $bucket, 
         'Rules' => array( array(
+                'ID' => $NAME,
                 'Expiration' => array(
-                        'Date' => gmdate('D, d M Y H:i:s T',strtotime('+10 minutes')),
+                        ######################################
+                        # Cant make this work
+                        # Results in malformed XML error
+                        ######################################
+                        //'Date' => $expiry,
                         'Days' => '1'
                 ),
                 'Prefix' => '',
@@ -195,7 +201,6 @@ $client->putBucketLifecycle(
         )),
     )
 );
-
 
 ################################################
 # SQS
