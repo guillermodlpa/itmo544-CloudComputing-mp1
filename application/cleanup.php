@@ -169,7 +169,7 @@ foreach ($iterator as $item) {
 # S3
 # Mark object for expiration in 10 minutes
 ################################################
-$newFilename = str_replace(".jpg", "_new.jpg", $filename);
+/*$newFilename = str_replace(".jpg", "_new.jpg", $filename);
  $client->copyObject(
     array(
         'ACL' => 'public-read',
@@ -180,7 +180,20 @@ $newFilename = str_replace(".jpg", "_new.jpg", $filename);
         'Expires' => gmdate('D, d M Y H:i:s T',strtotime('+10 minutes')),
         'MetadataDirective' => 'REPLACE',
     )
- );
+ );*/
+
+$client->putBucketLifecycle(
+    array(
+        'Bucket' => $bucket, 
+        'Rules' => array(
+            'Expiration' => array(
+                'Date' => gmdate('D, d M Y H:i:s T',strtotime('+10 minutes'))
+            ),
+            'Prefix' => '*',
+            'Status' => 'Enabled'
+        )
+    )
+);
 
 ################################################
 # SQS
@@ -247,6 +260,11 @@ $result = $snsclient->publish(array(
         body{
             font-family: "Arial", sans-serif;
         }
+        .next {
+            font-size:170%;
+            text-align: center;
+            margin: 30px 0;
+        }
     </style>
 </head>
 <body>
@@ -263,5 +281,7 @@ $result = $snsclient->publish(array(
     <p>A text message was sent to <? echo $phone ?> with the URL of the processed image</p>
 
     <p>Thanks!</p>
+
+     <p class="next">Start again --> <a href="index.php">Index</a></p>
 </body>
 </html>
