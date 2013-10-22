@@ -185,15 +185,17 @@ foreach ($iterator as $item) {
 $client->putBucketLifecycle(
     array(
         'Bucket' => $bucket, 
-        'Rules' => array(
-            'Expiration' => array(
-                'Date' => gmdate('D, d M Y H:i:s T',strtotime('+10 minutes'))
-            ),
-            'Prefix' => '*',
-            'Status' => 'Enabled'
-        )
+        'Rules' => array( array(
+                'Expiration' => array(
+                        'Date' => gmdate('D, d M Y H:i:s T',strtotime('+10 minutes')),
+                        'Days' => '1'
+                ),
+                'Prefix' => '',
+                'Status' => 'Enabled',
+        )),
     )
 );
+
 
 ################################################
 # SQS
