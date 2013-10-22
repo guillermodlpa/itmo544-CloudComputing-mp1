@@ -169,19 +169,11 @@ foreach ($iterator as $item) {
 # S3
 # Mark object for expiration in 10 minutes
 ################################################
-/*$newFilename = str_replace(".jpg", "_new.jpg", $filename);
- $client->copyObject(
-    array(
-        'ACL' => 'public-read',
-        'Bucket' => $bucket, 
-        'Key' => $newFilename,
-        'CopySource' => urlencode($bucket . '/' . $newFilename),
-        'CacheControl' => 'max-age=94608000',
-        'Expires' => gmdate('D, d M Y H:i:s T',strtotime('+10 minutes')),
-        'MetadataDirective' => 'REPLACE',
-    )
- );*/
 
+/*
+    The expiration date is currently set to ONE DAY
+    Couldn't make it work with 10 minutes, as requested
+*/
 $expiry = "" . gmdate('r',strtotime('+10 minutes')) . "";
 $client->putBucketLifecycle(
     array(
