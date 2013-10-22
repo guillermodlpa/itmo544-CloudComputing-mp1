@@ -297,7 +297,6 @@ function addStamp($image)
 
     <p>A mini project for ITMO 544 - Cloud Computing</p>
     <p>Illinois Institute of Technology</p>
-    <p>Student: Guillermo de la Puente</p>
     <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
 
     <h2>Resize</h2>
