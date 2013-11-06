@@ -184,7 +184,6 @@ $result = $sqsclient->sendMessage(array(
     'DelaySeconds' => 15,
 ));
 
-
 ?>
 <!DOCTYPE html>
 <html>
