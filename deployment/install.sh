@@ -37,13 +37,14 @@ cd /var/www
 curl -sS https://getcomposer.org/installer | php
 
 # Get project
-sudo wget https://github.com/gpuenteallott/itmo544-CloudComputing-mp1/archive/master.zip
-sudo unzip master.zip
+$BRANCH=v2_two_steps
+sudo wget https://github.com/gpuenteallott/itmo544-CloudComputing-mp1/archive/$BRANCH.zip
+sudo unzip $BRANCH.zip
 shopt -s dotglob # include hidden files in mv operation
-sudo mv itmo544-CloudComputing-mp1-master/application/* /var/www
+sudo mv itmo544-CloudComputing-mp1-$BRANCH/application/* /var/www
 shopt -u dotglob # restore default behaviour
-sudo rm master.zip
-sudo rm -R itmo544-CloudComputing-mp1-master
+sudo rm $BRANCH.zip
+sudo rm -R itmo544-CloudComputing-mp1-$BRANCH
 sudo rm index.html # remove default apache2 welcome
 
 # Install libraries
