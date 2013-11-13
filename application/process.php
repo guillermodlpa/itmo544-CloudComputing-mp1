@@ -101,6 +101,8 @@ $result = $client->putObject(array(
         'md5' =>  md5_file($pathToFile),
     )
 ));
+
+$filename=$_FILES['uploaded_file']['name'];
 //print "#############################\n";
 //var_export($result->getkeys());
 // this gets all the key value pairs and exports them as system variables making our lives nice so we don't have to do this manually. 
@@ -116,6 +118,12 @@ $url= $result['ObjectURL'];
 # The initial value of finishedurl is empty, will be filled when the processing is done
 ###################################################
 
+# Since now we switch automatically from process.php to resize.php
+# the simpleDB item will be created later
+# when we have all the info
+
+
+/*
 # The domain was already created in setup
 # Just in case, to avoid potential errors, create it
 $result = $sdbclient->createDomain(array(
@@ -163,13 +171,17 @@ $result = $sdbclient->putAttributes(array(
         ), 
     ),
 ));
-
+*/
 
 #####################################################
 # SQS
 # place a queue with the id as the sqs body
 #####################################################
 
+# Since we use include to execute automatically resize.php
+# There is no need to use SQS
+
+/*
 # Obtain the SQS url for the given name
 $sqs_queue_url = $sqsclient->getQueueUrl(array(
     'QueueName' => "$NAME-sqs",
@@ -183,8 +195,8 @@ $result = $sqsclient->sendMessage(array(
     'MessageBody' => $UUID,
     'DelaySeconds' => 15,
 ));
-
-?>
+*/
+/*
 <!DOCTYPE html>
 <html>
 <head>
@@ -217,3 +229,6 @@ $result = $sqsclient->sendMessage(array(
     <p class="next">Continue to next step --> <a href="resize.php">Resize</a></p>
 </body>
 </html>
+*/
+
+include('resize.php');

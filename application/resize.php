@@ -18,39 +18,43 @@
 ################################################
 
 // Include the SDK using the Composer autoloader
-require 'vendor/autoload.php';
+//require 'vendor/autoload.php';
 #header("Content-type: text/plain; charset=utf-8");
 
-use Aws\SimpleDb\SimpleDbClient;
-use Aws\S3\S3Client;
-use Aws\Sqs\SqsClient;
-use Aws\Common\Aws;
-use Aws\SimpleDb\Exception\InvalidQueryExpressionException;
+//use Aws\SimpleDb\SimpleDbClient;
+//use Aws\S3\S3Client;
+//use Aws\Sqs\SqsClient;
+//use Aws\Common\Aws;
+//use Aws\SimpleDb\Exception\InvalidQueryExpressionException;
 
 //aws factory
-$aws = Aws::factory('vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
+//$aws = Aws::factory('vendor/aws/aws-sdk-php/src/Aws/Common/Resources/custom-config.php');
 
 // Instantiate the S3 client with your AWS credentials and desired AWS region
-$client = $aws->get('S3');
+//$client = $aws->get('S3');
 
-$sdbclient = $aws->get('SimpleDb');
+//$sdbclient = $aws->get('SimpleDb');
 
-$sqsclient = $aws->get('Sqs');
+//$sqsclient = $aws->get('Sqs');
 
 # Read the name file
 # Name is the resources identifier in AWS for this system
-$NAME = file_get_contents("name.txt");
-$NAME_SDB = str_replace("-", "", $NAME)."sdb";
+//$NAME = file_get_contents("name.txt");
+//$NAME_SDB = str_replace("-", "", $NAME)."sdb";
 
 // sqs message body will contain the id
-$mbody="";
+//$mbody="";
 // sqs receipt handle will contain an id necessary to remove the sqs message later
-$receiptHandle="";
+//$receiptHandle="";
 
 #####################################################
 # SQS Read the queue for some information -- we will consume the queue later
 #####################################################
 
+# Since we come to resize.php directly from process.php, there is no need to
+# load the contents from SQS
+
+/*
 # The URL must be obtained
 # Obtain the SQS url for the given name
 $sqs_queue_url = $sqsclient->getQueueUrl(array(
@@ -69,26 +73,34 @@ $result = $sqsclient->receiveMessage(array(
 ######################################
 # Probably need some logic in here to handle delays
 ######################################
+*/
+// foreach ($result->getPath('Messages/*/Body') as $messageBody) {
+//     // Do something with the message
+//     echo "SQS: " . $messageBody . "\n";
 
-foreach ($result->getPath('Messages/*/Body') as $messageBody) {
-    // Do something with the message
-    //echo "SQS: " . $messageBody . "\n";
-    $mbody=$messageBody;
-}
-foreach ($result->getPath('Messages/*/ReceiptHandle') as $receiptHandle2) {
-    // Do something with the message
-   // echo "SQS receipt Handle: " . $receiptHandle2 . "\n";
-    $receiptHandle=$receiptHandle2;
-}
 
-if ( $mbody === "" ) {
-    echo "The value in SQS is not readable yet. Wait a few seconds and reload the page.";
-    exit;
-}
+//     $mbody=$messageBody;
+// }
+// foreach ($result->getPath('Messages/*/ReceiptHandle') as $receiptHandle2) {
+//     // Do something with the message
+//    // echo "SQS receipt Handle: " . $receiptHandle2 . "\n";
+//     $receiptHandle=$receiptHandle2;
+// }
+
+// if ( $mbody === "" ) {
+//     echo "The value in SQS is not readable yet. Wait a few seconds and reload the page.";
+//     exit;
+// }
+
+
 
 ##############################################
 # Select from SimpleDB element where id = the id in the Queue
 ##############################################
+
+# Since we come from the process.php with an include, and the variables there
+# are shared here, there is not need to load resources from SimpleDB
+/*
 $exp = "select * from $NAME_SDB where id = '$mbody'";
 //echo "\n".$exp."\n";
 
@@ -158,6 +170,7 @@ foreach ($iterator as $item) {
         }
     }
 }
+*/
 
 ###########################################################################
 #  Now that you have the URI returned in the S3 object you can use wget -
@@ -213,6 +226,10 @@ $newUrl= $result['ObjectURL'];
 # Update the record of this object to include the finished url information
 ############################################################################
 
+#  Because we didn't put any contents inside SDB yet, there is no update to make
+#
+
+/*
 $itemName = 'images-'.$id;
 
 $result = $sdbclient->putAttributes(array(
@@ -232,7 +249,7 @@ $result = $sdbclient->putAttributes(array(
         ),
     ),
 ));
-
+*/
 
 #########################################################################
 # PHP function for adding a "stamp" or watermark through the php gd library
@@ -320,3 +337,4 @@ function addStamp($image)
      <p class="next">Continue to next step --> <a href="cleanup.php">Clean Up</a></p>
 </body>
 </html>
+
