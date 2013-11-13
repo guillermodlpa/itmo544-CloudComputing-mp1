@@ -32,20 +32,22 @@ sudo apt-get -y install git apache2 php5 php5-curl php5-cli curl unzip php5-gd
 # Restart Tomcat to apply port changes and recognize curl
 sudo service apache2 restart
 
+# remove default apache2 welcome
+sudo rm index.html
+
 # Download composer
 cd /var/www
 curl -sS https://getcomposer.org/installer | php
 
 # Get project
-$BRANCH=v2_two_steps
+BRANCH=v2_two_steps
 sudo wget https://github.com/gpuenteallott/itmo544-CloudComputing-mp1/archive/$BRANCH.zip
 sudo unzip $BRANCH.zip
 shopt -s dotglob # include hidden files in mv operation
-sudo mv itmo544-CloudComputing-mp1-$BRANCH/application/* /var/www
+sudo mv itmo544-CloudComputing-mp1-2_two_steps/application/* /var/www
 shopt -u dotglob # restore default behaviour
 sudo rm $BRANCH.zip
-sudo rm -R itmo544-CloudComputing-mp1-$BRANCH
-sudo rm index.html # remove default apache2 welcome
+sudo rm -R itmo544-CloudComputing-mp1-2_two_steps
 
 # Install libraries
 sudo php composer.phar install
