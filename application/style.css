@@ -82,9 +82,9 @@ div.picContainer img {
     color: #555;
 }
 ol {
-	list-style-type: upper-roman;
+	list-style-type: upper-latin;
 	padding: 10px 0;
-	margin-left: 10px;
+	margin-left: 40px;
 }
 
 .aside {
