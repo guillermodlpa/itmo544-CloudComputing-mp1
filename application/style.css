@@ -63,9 +63,14 @@ div.picContainer{
     float:left;
     margin-top: 20px;
 }
+div.picContainerBig{
+    width:50%;
+    float:left;
+    margin-top: 20px;
+}
 div.picContainer img {
-    width: 90%;
-    margin: 0 5%;
+    width: 80%;
+    margin: 0 10%;
 }
 .next {
     font-size:170%;

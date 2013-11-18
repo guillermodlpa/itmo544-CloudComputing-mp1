@@ -294,7 +294,7 @@ $result = $snsclient->publish(array(
             <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
         </header>
 
-        <h2>Clean Up step</h2>
+        <h2>3. Clean Up step</h2>
         <p>What have you done?!</p>
         <ol>
             <li>Value retrieved from the SQS message</li>
@@ -308,7 +308,7 @@ $result = $snsclient->publish(array(
         <p>If you didn't receive a text message with the URL, make sure you subscribe and then try again.</p>
         <p>Thanks!</p>
         <br/>
-        <h3>Stamp step</h3>
+        <h3>2- Stamp step</h3>
         <p>What did you do?!</p>
         <ol>
             <li>Value was retrieved from the SQS message</li>
@@ -318,18 +318,18 @@ $result = $snsclient->publish(array(
             <li>New image was uploaded to S3</li>
         </ol>
 
-        <div class="picContainer">
+        <div class="picContainerBig">
             <h3>New image in S3</h3>
             <p class="link"><? echo $finishedurl ?></p>
             <img src="<? echo $finishedurl ?>" />
         </div>
-        <div class="picContainer">
+        <div class="picContainerBig">
             <h3>Previous image in S3</h3>
             <p class="link"><? echo $rawurl ?></p>
             <img src="<? echo $rawurl ?>" />
         </div>  
-        <br/>
-        <h3>Process step</h3>
+        <br/><br/>
+        <h3>1. Process step</h3>
         <p>What did you do?!</p>
         <ol>
             <li>Picture was uploaded to S3 bucket</li>

@@ -308,7 +308,7 @@ function addStamp($image)
             <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
         </header>
 
-        <h2>Stamp step</h2>
+        <h2>2. Stamp step</h2>
         <p>What have you done?!</p>
         <ol>
             <li>Value retrieved from the SQS message</li>
@@ -334,7 +334,7 @@ function addStamp($image)
             <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
         </div>  
         <br/>
-        <h3>Process step</h3>
+        <h3>1. Process step</h3>
         <p>What did you do?!</p>
         <ol>
             <li>Picture was uploaded to S3 bucket</li>
