@@ -82,7 +82,33 @@ foreach ($result->getPath('Messages/*/ReceiptHandle') as $receiptHandle2) {
 }
 
 if ( $mbody === "" ) {
-    echo "The value in SQS is not readable yet. Wait a few seconds and reload the page.";
+    ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css"/>
+    <title>ITMO 544 - Cleanup.php</title>
+    
+</head>
+<body>
+    <div id="main">
+        <header>
+            <h1>Picture Uploader</h1>
+
+            <p>A mini project for ITMO 544 - Cloud Computing</p>
+            <p>Illinois Institute of Technology</p>
+            <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+        </header>
+
+        <h2>Impacient!</h2>
+        <p>The value in SQS isn't readable yet because of its eventually consistent behaviour.</p>
+        <p>You can refresh this view in a few seconds to try again</p>
+
+         <p class="next"><a href="" onClick="window.location.reload">Refresh</a></p>
+    </div>
+</body>
+</html>
+<?php
     exit;
 }
 
@@ -282,7 +308,7 @@ function addStamp($image)
             <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
         </header>
 
-        <h2>Resize</h2>
+        <h2>Stamp</h2>
         <p>What have you done?!</p>
         <ol>
             <li>Value retrieved from the SQS message</li>
@@ -298,12 +324,12 @@ function addStamp($image)
             <img src="<? echo $localfilename ?>" />
         </div>
         <div class="picContainer">
-            <p>Remote image in S3</p>
+            <h3>Remote image in S3</h3>
             <p class="link"><? echo $newUrl ?></p>
             <img src="<? echo $newUrl ?>" />
         </div>
         <div class="picContainer">
-            <p>Previous image in S3</p>
+            <h3>Previous image in S3</h3>
             <p class="link"><? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?></p>
             <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
         </div>  

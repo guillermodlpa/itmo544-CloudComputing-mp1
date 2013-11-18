@@ -86,7 +86,33 @@ foreach ($result->getPath('Messages/*/Body') as $messageBody) {
 
 
 if ( $mbody === "" ) {
-    echo "The value in SQS is not readable yet. Wait a few seconds and reload the page.";
+    ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css"/>
+    <title>ITMO 544 - Cleanup.php</title>
+    
+</head>
+<body>
+    <div id="main">
+        <header>
+            <h1>Picture Uploader</h1>
+
+            <p>A mini project for ITMO 544 - Cloud Computing</p>
+            <p>Illinois Institute of Technology</p>
+            <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+        </header>
+
+        <h2>Impacient!</h2>
+        <p>The value in SQS isn't readable yet because of its eventually consistent behaviour.</p>
+        <p>You can refresh this view in a few seconds to try again</p>
+
+         <p class="next"><a href="" onClick="window.location.reload">Refresh</a></p>
+    </div>
+</body>
+</html>
+<?php
     exit;
 }
 
@@ -259,7 +285,7 @@ $result = $snsclient->publish(array(
     
 </head>
 <body>
-    <div>
+    <div id="main">
         <header>
             <h1>Picture Uploader</h1>
 
