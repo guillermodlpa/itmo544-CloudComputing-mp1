@@ -32,11 +32,12 @@ sudo apt-get -y install git apache2 php5 php5-curl php5-cli curl unzip php5-gd
 # Restart Tomcat to apply port changes and recognize curl
 sudo service apache2 restart
 
+# Download composer
+cd /var/www
+
 # remove default apache2 welcome
 sudo rm index.html
 
-# Download composer
-cd /var/www
 curl -sS https://getcomposer.org/installer | php
 
 # Get project
