@@ -31,7 +31,15 @@
 			<p>Illinois Institute of Technology</p>
 			<p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
 		</header>
+		<div class="aside">
+			<p>Don't have an image?</p>
+			<p>Download this one</p>
+			<img src="han_solo.jpg"/>
+		</div>
+		
 		<h2>Fill the following form</h2>
+
+
 
 		<form action="process.php" method="post" enctype="multipart/form-data">
 		  <p><label>Email: <input type="text" name="email" required/></label></p>
