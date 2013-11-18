@@ -305,7 +305,7 @@ $result = $snsclient->publish(array(
             <li>Text message sent to <? echo $phone ?> including URL to the new image</li>
         </ol>
 
-
+        <p>If you didn't receive a text message with the URL, make sure you subscribe and then try again.</p>
         <p>Thanks!</p>
 
          <p class="next">Start again --> <a href="index.php">Index</a></p>
