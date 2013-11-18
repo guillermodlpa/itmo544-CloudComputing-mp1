@@ -319,19 +319,14 @@ $result = $snsclient->publish(array(
         </ol>
 
         <div class="picContainer">
-            <h3>Local image in server</h3>
-            <p class="link"><? echo $localfilename ?></p>
-            <img src="<? echo $localfilename ?>" />
-        </div>
-        <div class="picContainer">
-            <h3>Remote image in S3</h3>
-            <p class="link"><? echo $newUrl ?></p>
-            <img src="<? echo $newUrl ?>" />
+            <h3>New image in S3</h3>
+            <p class="link"><? echo $finishedurl ?></p>
+            <img src="<? echo $finishedurl ?>" />
         </div>
         <div class="picContainer">
             <h3>Previous image in S3</h3>
-            <p class="link"><? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?></p>
-            <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
+            <p class="link"><? echo $rawurl ?></p>
+            <img src="<? echo $rawurl ?>" />
         </div>  
 
         <h3>Process step</h3>
