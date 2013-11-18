@@ -190,7 +190,7 @@ foreach ($iterator as $item) {
         }
     }
 }
-
+$localfilename = "./tmp/$filename";
 ################################################
 # S3
 # Mark object for expiration in 10 minutes
@@ -294,7 +294,7 @@ $result = $snsclient->publish(array(
             <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
         </header>
 
-        <h2>Clean Up</h2>
+        <h2>Clean Up step</h2>
         <p>What have you done?!</p>
         <ol>
             <li>Value retrieved from the SQS message</li>
@@ -307,6 +307,40 @@ $result = $snsclient->publish(array(
 
         <p>If you didn't receive a text message with the URL, make sure you subscribe and then try again.</p>
         <p>Thanks!</p>
+
+        <h2>Stamp step</h2>
+        <p>What did you do?!</p>
+        <ol>
+            <li>Value was retrieved from the SQS message</li>
+            <li>Information about the image was retrieved from SimpleDB</li>
+            <li>Image was downloaded from S3</li>
+            <li>Funny face stamp was added</li>
+            <li>New image was uploaded to S3</li>
+        </ol>
+
+        <div class="picContainer">
+            <h3>Local image in server</h3>
+            <p class="link"><? echo $localfilename ?></p>
+            <img src="<? echo $localfilename ?>" />
+        </div>
+        <div class="picContainer">
+            <h3>Remote image in S3</h3>
+            <p class="link"><? echo $newUrl ?></p>
+            <img src="<? echo $newUrl ?>" />
+        </div>
+        <div class="picContainer">
+            <h3>Previous image in S3</h3>
+            <p class="link"><? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?></p>
+            <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
+        </div>  
+
+        <h3>Process step</h3>
+        <p>What did you do?!</p>
+        <ol>
+            <li>Picture was uploaded to S3 bucket</li>
+            <li>Information was recorded in SimpleDB</li>
+            <li>SQS message was added to recover the information in the following step</li>
+        </ol>
 
          <p class="next">Start again --> <a href="index.php">Index</a></p>
     </div>

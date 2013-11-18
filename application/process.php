@@ -203,7 +203,7 @@ $result = $sqsclient->sendMessage(array(
             <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
         </header>
 
-        <h2>Process</h2>
+        <h2>Process step</h2>
         <p>What have you done?!</p>
         <ol>
             <li>Picture uploaded to S3 bucket</li>
@@ -214,7 +214,7 @@ $result = $sqsclient->sendMessage(array(
 
         <p>S3 bucket: <? echo $bucket ?></p>
 
-        <p class="next">Continue to next step --> <a href="resize.php">Resize</a></p>
+        <p class="next">Continue to next step --> <a href="resize.php">Stamp</a></p>
     </div>
 </body>
 </html>
