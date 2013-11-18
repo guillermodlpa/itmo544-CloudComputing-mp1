@@ -307,8 +307,8 @@ $result = $snsclient->publish(array(
 
         <p>If you didn't receive a text message with the URL, make sure you subscribe and then try again.</p>
         <p>Thanks!</p>
-
-        <h2>Stamp step</h2>
+        <br/>
+        <h3>Stamp step</h3>
         <p>What did you do?!</p>
         <ol>
             <li>Value was retrieved from the SQS message</li>
@@ -328,7 +328,7 @@ $result = $snsclient->publish(array(
             <p class="link"><? echo $rawurl ?></p>
             <img src="<? echo $rawurl ?>" />
         </div>  
-
+        <br/>
         <h3>Process step</h3>
         <p>What did you do?!</p>
         <ol>

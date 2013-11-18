@@ -71,6 +71,7 @@ div.picContainer img {
     font-size:170%;
     text-align: center;
     margin: 30px 0;
+    clear: both;
 }
 .link {
     color: #555;
@@ -87,4 +88,7 @@ ol {
 }
 .aside img{
 	width: 100%;
+}
+br{
+	clear: both;
 }

@@ -333,7 +333,7 @@ function addStamp($image)
             <p class="link"><? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?></p>
             <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
         </div>  
-
+        <br/>
         <h3>Process step</h3>
         <p>What did you do?!</p>
         <ol>
