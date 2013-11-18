@@ -254,32 +254,35 @@ $result = $snsclient->publish(array(
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clean Up PHP</title>
-    <style>
-        body{
-            font-family: "Arial", sans-serif;
-        }
-        .next {
-            font-size:170%;
-            text-align: center;
-            margin: 30px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css"/>
+    <title>ITMO 544 - Cleanup.php</title>
+    
 </head>
 <body>
-    <h1>Picture Uploader</h1>
+    <div>
+        <header>
+            <h1>Picture Uploader</h1>
 
-    <p>A mini project for ITMO 544 - Cloud Computing</p>
-    <p>Illinois Institute of Technology</p>
-    <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+            <p>A mini project for ITMO 544 - Cloud Computing</p>
+            <p>Illinois Institute of Technology</p>
+            <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+        </header>
 
-    <h2>Clean Up</h2>
-    <p>Everything cleaned up</p>
-    <p>The processed file will be removed in 10 minutes from now</p>
-    <p>A text message was sent to <? echo $phone ?> with the URL of the processed image</p>
+        <h2>Clean Up</h2>
+        <p>What have you done?!</p>
+        <ol>
+            <li>Value retrieved from the SQS message</li>
+            <li>Information about the image retrieved from SimpleDB</li>
+            <li>Image expiration date set to one day</li>
+            <li>SQS message deleted</li>
+            <li>Given phone suscribed to receive text messages</li>
+            <li>Text message sent to <? echo $phone ?> including URL to the new image</li>
+        </ol>
 
-    <p>Thanks!</p>
 
-     <p class="next">Start again --> <a href="index.php">Index</a></p>
+        <p>Thanks!</p>
+
+         <p class="next">Start again --> <a href="index.php">Index</a></p>
+    </div>
 </body>
 </html>

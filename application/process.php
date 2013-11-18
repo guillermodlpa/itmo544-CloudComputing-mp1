@@ -189,32 +189,32 @@ $result = $sqsclient->sendMessage(array(
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Process</title>
-    <style>
-        body{
-            font-family: "Arial", sans-serif;
-        }
-        .next {
-            font-size:170%;
-            text-align: center;
-            margin: 30px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css"/>
+    <title>ITMO 544 - Process.php</title>
 </head>
 
 <body>
-    <h1>Picture Uploader</h1>
+    <div id="main">
+        <header>
+            <h1>Picture Uploader</h1>
 
-    <p>A mini project for ITMO 544 - Cloud Computing</p>
-    <p>Illinois Institute of Technology</p>
-    <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+            <p>A mini project for ITMO 544 - Cloud Computing</p>
+            <p>Illinois Institute of Technology</p>
+            <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+        </header>
 
-    <h2>Fill the following form</h2>
+        <h2>Process</h2>
+        <p>What have you done?!</p>
+        <ol>
+            <li>Picture uploaded to S3 bucket</li>
+            <li>Information recorded in SimpleDB</li>
+            <li>SQS message added to recover the information in the following step</li>
+        </ol>
 
 
-    <p>Thank you</p>
-    <p>S3 bucket: <? echo $bucket ?></p>
+        <p>S3 bucket: <? echo $bucket ?></p>
 
-    <p class="next">Continue to next step --> <a href="resize.php">Resize</a></p>
+        <p class="next">Continue to next step --> <a href="resize.php">Resize</a></p>
+    </div>
 </body>
 </html>

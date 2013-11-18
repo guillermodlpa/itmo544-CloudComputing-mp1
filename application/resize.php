@@ -269,54 +269,46 @@ function addStamp($image)
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Resize PHP</title>
-    <style>
-        body{
-            font-family: "Arial", sans-serif;
-        }
-        div{
-            width:33%;
-            float:left;
-        }
-        div img {
-            width: 90%;
-            margin: 0 5%;
-        }
-        .next {
-            font-size:170%;
-            text-align: center;
-            margin: 30px 0;
-        }
-        .link {
-            color: #555;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css"/>
+    <title>ITMO 544 - Resize.php</title>
 </head>
 <body>
-    <h1>Picture Uploader</h1>
+    <div id="main">
+        <header>
+            <h1>Picture Uploader</h1>
 
-    <p>A mini project for ITMO 544 - Cloud Computing</p>
-    <p>Illinois Institute of Technology</p>
-    <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+            <p>A mini project for ITMO 544 - Cloud Computing</p>
+            <p>Illinois Institute of Technology</p>
+            <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
+        </header>
 
-    <h2>Resize</h2>
+        <h2>Resize</h2>
+        <p>What have you done?!</p>
+        <ol>
+            <li>Value retrieved from the SQS message</li>
+            <li>Information about the image retrieved from SimpleDB</li>
+            <li>Image downloaded from S3</li>
+            <li>Funny face stamp added</li>
+            <li>New image uploaded to S3</li>
+        </ol>
 
-    <div>
-        <h3>Local image in server</h3>
-        <p class="link"><? echo $localfilename ?></p>
-        <img src="<? echo $localfilename ?>" />
+        <div class="picContainer">
+            <h3>Local image in server</h3>
+            <p class="link"><? echo $localfilename ?></p>
+            <img src="<? echo $localfilename ?>" />
+        </div>
+        <div class="picContainer">
+            <p>Remote image in S3</p>
+            <p class="link"><? echo $newUrl ?></p>
+            <img src="<? echo $newUrl ?>" />
+        </div>
+        <div class="picContainer">
+            <p>Previous image in S3</p>
+            <p class="link"><? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?></p>
+            <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
+        </div>  
+
+         <p class="next">Continue to next step --> <a href="cleanup.php">Clean Up</a></p>
     </div>
-    <div>
-        <p>Remote image in S3</p>
-        <p class="link"><? echo $newUrl ?></p>
-        <img src="<? echo $newUrl ?>" />
-    </div>
-    <div>
-        <p>Previous image in S3</p>
-        <p class="link"><? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?></p>
-        <img src="<? echo $s3urlprefix.'/'.$bucket.'/'.$filename ?>" />
-    </div>  
-
-     <p class="next">Continue to next step --> <a href="cleanup.php">Clean Up</a></p>
 </body>
 </html>
