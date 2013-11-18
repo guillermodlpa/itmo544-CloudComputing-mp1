@@ -104,7 +104,7 @@ if ( $mbody === "" ) {
             <p><a href="https://github.com/gpuenteallott/itmo544-CloudComputing-mp1">Project in GitHub</a></p>
         </header>
 
-        <h2>Impacient!</h2>
+        <h2>Impatient!</h2>
         <p>The value in SQS isn't readable yet because of its eventually consistent behaviour.</p>
         <p>You can refresh this view in a few seconds to try again</p>
 
