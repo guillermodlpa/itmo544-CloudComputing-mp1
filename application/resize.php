@@ -87,7 +87,7 @@ if ( $mbody === "" ) {
 <html>
 <head>
     <link rel="stylesheet" href="style.css"/>
-    <title>ITMO 544 - Cleanup.php</title>
+    <title>ITMO 544 - Resize.php</title>
     
 </head>
 <body>

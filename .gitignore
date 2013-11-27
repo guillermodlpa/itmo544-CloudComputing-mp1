@@ -7,3 +7,4 @@ application/vendor
 *.priv
 custom-config.php
 *.txt
+*.tmp
