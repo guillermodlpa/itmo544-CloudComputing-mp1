@@ -48,7 +48,8 @@ SCRIPT_FILE=install.sh
 INSTANCE_TYPE=t1.micro
 REGION=us-east-1
 AVAIL_ZONES=us-east-1a,us-east-1b,us-east-1c,us-east-1d
-AMI=ami-ad83d7c4
+AMI=ami-3d0f2e54
+# Old AMI was AMI=ami-ad83d7c4
 NUMBER_OF_INSTANCES=2
 # http://cloud-images.ubuntu.com/locator/ec2/
 
