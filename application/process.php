@@ -204,6 +204,14 @@ $result = $snsclient->subscribe(array(
     'Endpoint' => $phone,
 )); } catch(InvalidParameterException $i) {
  //echo 'Invalid parameter: '. $i->getMessage() . "\n";
+}
+
+$result = $snsclient->subscribe(array(
+    'TopicArn' => $topicArn,
+    'Protocol' => 'email',
+    'Endpoint' => $_POST["email"],
+)); } catch(InvalidParameterException $i) {
+ //echo 'Invalid parameter: '. $i->getMessage() . "\n";
 } 
 
 ?>
