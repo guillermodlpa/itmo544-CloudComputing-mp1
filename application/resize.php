@@ -337,9 +337,10 @@ function addStamp($image)
         <h3>1. Process step</h3>
         <p>What did you do?!</p>
         <ol>
-            <li>Picture was uploaded to S3 bucket</li>
-            <li>Information was recorded in SimpleDB</li>
-            <li>SQS message was added to recover the information in the following step</li>
+            <li>Picture uploaded to S3 bucket <? echo $bucket ?></li>
+            <li>Information recorded in SimpleDB</li>
+            <li>SQS message added to recover the information in the following step</li>
+            <li>Phone number <? echo $phone ?> subscribed</li>
         </ol>
 
          <p class="next">Continue to next step --> <a href="cleanup.php">Clean Up</a></p>

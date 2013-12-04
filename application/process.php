@@ -227,13 +227,11 @@ $result = $snsclient->subscribe(array(
         <h2>Process step</h2>
         <p>What have you done?!</p>
         <ol>
-            <li>Picture uploaded to S3 bucket</li>
+            <li>Picture uploaded to S3 bucket <? echo $bucket ?></li>
             <li>Information recorded in SimpleDB</li>
             <li>SQS message added to recover the information in the following step</li>
+            <li>Phone number <? echo $phone ?> subscribed</li>
         </ol>
-
-
-        <p>S3 bucket: <? echo $bucket ?></p>
 
         <p class="next">Continue to next step --> <a href="resize.php">Stamp</a></p>
     </div>
