@@ -42,6 +42,8 @@
 #
 ################################################ 
 
+date
+
 EC2_API_TOOLS=~/ec2-api-tools-1.6.10.1
 AWS_ELB_TOOLS=~/ElasticLoadBalancing-1.0.17.0
 SCRIPT_FILE=install.sh
@@ -168,3 +170,5 @@ sed -i "s/########/\//g" custom-config.php
 php install.php $NAME custom-config.php
 
 rm custom-config.php
+
+date
