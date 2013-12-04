@@ -184,6 +184,27 @@ $result = $sqsclient->sendMessage(array(
     'DelaySeconds' => 15,
 ));
 
+#####################################################
+# SNS
+# Subscribe
+#####################################################
+$result = $snsclient->listTopics();
+$topicArn="";
+
+foreach ($result->getPath('Topics/*/TopicArn') as $topicArnTmp) {
+
+    if ( strstr($topicArnTmp,$topic) ) {
+        $topicArn=$topicArnTmp;
+    }
+}
+try {
+$result = $snsclient->subscribe(array(
+    'TopicArn' => $topicArn,
+    'Protocol' => 'sms',
+    'Endpoint' => $phone,
+)); } catch(InvalidParameterException $i) {
+ //echo 'Invalid parameter: '. $i->getMessage() . "\n";
+} 
 
 ?>
 <!DOCTYPE html>

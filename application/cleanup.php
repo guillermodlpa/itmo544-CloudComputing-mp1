@@ -249,7 +249,7 @@ foreach ($result->getPath('Topics/*/TopicArn') as $topicArnTmp) {
 }
 
 //echo "TOPIC ARN=($topicArn)";
-
+/*
 try {
 $result = $snsclient->subscribe(array(
     'TopicArn' => $topicArn,
@@ -258,7 +258,7 @@ $result = $snsclient->subscribe(array(
 )); } catch(InvalidParameterException $i) {
  //echo 'Invalid parameter: '. $i->getMessage() . "\n";
 } 
-
+*/
 //echo " Suscribed . Sending ";
 #####################################################
 # SNS publishing of message to topic - which will be sent via SMS
