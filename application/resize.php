@@ -341,6 +341,7 @@ function addStamp($image)
             <li>Information recorded in SimpleDB</li>
             <li>SQS message added to recover the information in the following step</li>
             <li>Phone number <? echo $phone ?> subscribed</li>
+            <li>Email <? echo $email ?> suscribed</li>
         </ol>
 
          <p class="next">Continue to next step --> <a href="cleanup.php">Clean Up</a></p>

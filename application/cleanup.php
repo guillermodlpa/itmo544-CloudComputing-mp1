@@ -301,8 +301,8 @@ $result = $snsclient->publish(array(
             <li>Information about the image retrieved from SimpleDB</li>
             <li>Image expiration date set to one day</li>
             <li>SQS message deleted</li>
-            <li>Given phone suscribed to receive text messages</li>
             <li>Text message sent to <? echo $phone ?> including URL to the new image</li>
+            <li>Email sent to <? echo $email ?> including URL to the new image</li>
         </ol>
 
         <p>If you didn't receive a text message with the URL, make sure you subscribe and then try again.</p>
@@ -336,6 +336,7 @@ $result = $snsclient->publish(array(
             <li>Information recorded in SimpleDB</li>
             <li>SQS message added to recover the information in the following step</li>
             <li>Phone number <? echo $phone ?> subscribed</li>
+            <li>Email <? echo $email ?> suscribed</li>
         </ol>
 
          <p class="next">Start again --> <a href="index.php">Index</a></p>

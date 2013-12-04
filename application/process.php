@@ -205,7 +205,7 @@ $result = $snsclient->subscribe(array(
 )); } catch(InvalidParameterException $i) {
  //echo 'Invalid parameter: '. $i->getMessage() . "\n";
 }
-
+try{
 $result = $snsclient->subscribe(array(
     'TopicArn' => $topicArn,
     'Protocol' => 'email',
@@ -239,6 +239,7 @@ $result = $snsclient->subscribe(array(
             <li>Information recorded in SimpleDB</li>
             <li>SQS message added to recover the information in the following step</li>
             <li>Phone number <? echo $phone ?> subscribed</li>
+            <li>Email <? echo $_POST["email"] ?> suscribed</li>
         </ol>
 
         <p class="next">Continue to next step --> <a href="resize.php">Stamp</a></p>
